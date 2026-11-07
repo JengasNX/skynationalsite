@@ -20,7 +20,20 @@ const { lang } = Astro.props;
 const dict = dicts[lang];
 
 const publicRoot = fileURLToPath(new URL('../../public', import.meta.url));
-const hasPhoto = (id: string) => fs.existsSync(`${publicRoot}/assets/team/${id}.jpg`);
+
+/** Finds a team photo under public/assets/team/ for any common image extension and any file casing. */
+const photoFor = (id: string): string | null => {
+  const dir = `${publicRoot}/assets/team`;
+  if (!fs.existsSync(dir)) return null;
+  const files = fs.readdirSync(dir);
+  for (const ext of ['jpg', 'jpeg', 'webp', 'png', 'avif']) {
+    const match = files.find((f) => f.toLowerCase() === `${id}.${ext}`);
+    if (match) return `/assets/team/${match}`;
+  }
+  return null;
+};
+
+const hasPhoto = (id: string) => photoFor(id) !== null;
 
 const initialsOf = (name: string) =>
   name
@@ -65,20 +78,22 @@ const initialsOf = (name: string) =>
         TEAM_MEMBERS.map((member, index) => (
           <article class="team-card" data-reveal style={`--reveal-delay: ${index * 110}ms;`}>
             <div class="team-card__media">
-              {hasPhoto(member.id) ? (
-                <img
-                  src={asset(`/assets/team/${member.id}.jpg`)}
-                  alt={member.name}
-                  loading="lazy"
-                  decoding="async"
-                  width="520"
-                  height="420"
-                />
-              ) : (
-                <div class="team-card__fallback" aria-label={member.name}>
-                  <span>{initialsOf(member.name)}</span>
-                </div>
-              )}
+              {
+                photoFor(member.id) ? (
+                  <img
+                    src={asset(photoFor(member.id)!)}
+                    alt={member.name}
+                    loading="lazy"
+                    decoding="async"
+                    width="520"
+                    height="420"
+                  />
+                ) : (
+                  <div class="team-card__fallback" aria-label={member.name}>
+                    <span>{initialsOf(member.name)}</span>
+                  </div>
+                )
+              }
             </div>
             <h3 class="team-card__name">
               <span class="team-card__role">{member.role}</span>
