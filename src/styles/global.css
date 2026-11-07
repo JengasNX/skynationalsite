@@ -64,8 +64,8 @@
 [data-theme='light'] {
   color-scheme: light;
   --bg: #ffffff;
-  --bg-alt: #f2f7fd;
-  --bg-soft: #e7f0fb;
+  --bg-alt: #0a1330;
+  --bg-soft: #eaf1fb;
   --surface: #ffffff;
   --surface-2: #f7fafd;
   --border: #dde8f6;
@@ -73,12 +73,12 @@
   --text: #08183a;
   --text-2: #2f4269;
   --muted: #5d7196;
-  --accent: #3b82f6;
-  --accent-hover: #2563eb;
-  --accent-soft: rgba(59, 130, 246, 0.1);
+  --accent: #10309f;
+  --accent-hover: #0d2785;
+  --accent-soft: rgba(16, 48, 159, 0.09);
   --accent-contrast: #ffffff;
-  --accent-2: #8b5cf6;
-  --accent-2-soft: rgba(139, 92, 246, 0.12);
+  --accent-2: #0d9fe0;
+  --accent-2-soft: rgba(13, 159, 224, 0.12);
   --ok: #0f9d58;
   --danger: #d93847;
   --hero-shade: linear-gradient(180deg, rgba(3, 9, 27, 0.62) 0%, rgba(3, 9, 27, 0.5) 40%, rgba(3, 9, 27, 0.9) 100%);
@@ -100,8 +100,8 @@
   --accent-hover: #60a5fa;
   --accent-soft: rgba(59, 130, 246, 0.18);
   --accent-contrast: #ffffff;
-  --accent-2: #a78bfa;
-  --accent-2-soft: rgba(139, 92, 246, 0.18);
+  --accent-2: #38bdff;
+  --accent-2-soft: rgba(56, 189, 255, 0.14);
   --ok: #37d67a;
   --danger: #ff6b74;
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 14px 34px -20px rgba(0, 0, 0, 0.9);
@@ -140,6 +140,49 @@ body {
 html.is-loading,
 html.is-loading body {
   overflow: hidden;
+}
+
+/* Session-frequent navigations skip the intro loader. */
+html.loader-skip #page-loader {
+  display: none;
+}
+
+/* Smooth leaving state for language/theme-like navigations
+   (fallback when View Transitions API is unavailable). */
+html.lang-leaving body {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+body {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* Cross-document view transitions: soft cross-fade + slight motion. */
+@view-transition {
+  navigation: auto;
+}
+
+@keyframes vt-out {
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes vt-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+::view-transition-old(root) {
+  animation: 0.3s ease both vt-out;
+}
+
+::view-transition-new(root) {
+  animation: 0.35s ease both vt-in;
 }
 
 h1,
@@ -213,6 +256,37 @@ button {
 
 .section--alt {
   background: var(--bg-alt);
+}
+
+/* Navy contrast bands on light theme: white page, deep navy sections.
+   Scoped tokens repaint every element placed inside these bands. */
+[data-theme='light'] .section--alt,
+[data-theme='light'] .page-head {
+  --surface: rgba(255, 255, 255, 0.05);
+  --surface-2: rgba(255, 255, 255, 0.08);
+  --border: rgba(255, 255, 255, 0.14);
+  --border-strong: rgba(255, 255, 255, 0.3);
+  --text: #f0f5ff;
+  --text-2: #c3d2f0;
+  --muted: #93a9d6;
+  --accent: #8fb4ff;
+  --accent-hover: #b7ccff;
+  --accent-soft: rgba(143, 180, 255, 0.14);
+  --accent-2-soft: rgba(56, 189, 255, 0.16);
+  --bg-soft: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  background: linear-gradient(180deg, #081126 0%, #0c1840 100%);
+}
+
+/* Light cards stay readable on the navy band */
+[data-theme='light'] .section--alt .card,
+[data-theme='light'] .section--alt .feature {
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+[data-theme='light'] .section--alt .vacancy-card__code {
+  background: rgba(255, 255, 255, 0.14);
+  color: #d7e2fb;
 }
 
 .section--tight {
@@ -318,14 +392,14 @@ button {
 }
 
 .btn--primary {
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  background: linear-gradient(135deg, #123a9e 0%, #0b2a7e 100%);
   color: #ffffff;
-  box-shadow: 0 10px 26px -12px rgba(59, 130, 246, 0.55);
+  box-shadow: 0 10px 26px -12px rgba(11, 42, 126, 0.55);
 }
 
 .btn--primary:hover {
-  background: linear-gradient(135deg, #4d8bff 0%, #2f6df0 100%);
-  box-shadow: 0 16px 34px -12px rgba(59, 130, 246, 0.65);
+  background: linear-gradient(135deg, #1a4bc2 0%, #10329a 100%);
+  box-shadow: 0 16px 34px -12px rgba(11, 42, 126, 0.65);
 }
 
 .btn--ghost {
@@ -1241,7 +1315,7 @@ button.feature.filter-btn.is-active .chip--accent {
   overflow: hidden;
   border-radius: calc(var(--radius) + 0.5rem);
   padding: clamp(2rem, 5vw, 3.5rem);
-  background: linear-gradient(120deg, var(--navy) 0%, #1b3fb0 55%, #0d7fd0 100%);
+  background: linear-gradient(120deg, #081126 0%, #0e2f8f 78%, #0d9fe0 160%);
   color: #ffffff;
   display: grid;
   gap: 1.25rem;
@@ -2010,6 +2084,16 @@ button.feature.filter-btn.is-active .chip--accent {
   }
 
   .js [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+
+  html.lang-leaving body {
     opacity: 1;
     transform: none;
   }

@@ -32,8 +32,8 @@ export const TEAM_MEMBERS: TeamEntry[] = [
     role: 'CEO',
     name: 'Helix',
     desc: {
-      ru: 'Руководит сообществом: стратегия, команда персонала и партнёрства на площадках VATSIM и IVAO.',
-      en: 'Runs the community: strategy, the staff team and partnerships across VATSIM and IVAO.',
+      ru: 'Руководит сообществом: стратегия, команда персонала и партнёрства в сети VATSIM.',
+      en: 'Runs the community: strategy, the staff team and partnerships across the VATSIM network.',
     },
   },
 ];

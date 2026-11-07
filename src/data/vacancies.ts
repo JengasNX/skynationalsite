@@ -63,13 +63,13 @@ export const VACANCIES: Vacancy[] = [
     responsibilities: {
       ru: [
         'Поиск и сопровождение партнёрств с другими сообществами',
-        'Продвижение SkyNational на площадках VATSIM и IVAO',
+        'Продвижение SkyNational на площадках VATSIM',
         'Условия сотрудничества и обменные программы',
         'Аналитика роста и эффективности каналов',
       ],
       en: [
         'Finding and maintaining partnerships with other communities',
-        'Promoting SkyNational across VATSIM and IVAO',
+        'Promoting SkyNational across VATSIM',
         'Cooperation terms and exchange programmes',
         'Growth analytics for every channel',
       ],

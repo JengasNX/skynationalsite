@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
-import { SITE } from '../config';
+import { SITE, EVENTS_ENABLED } from '../config';
 import { dicts } from '../i18n';
 import { localizeAll, markdownToText, slugOf } from '../utils/content';
 import { pathFor, type Lang } from '../utils/links';
@@ -63,18 +63,20 @@ export const GET: APIRoute = async () => {
       });
     }
 
-    const events = localizeAll(await getCollection('events'), lang);
-    for (const entry of events) {
-      const slug = slugOf(entry.id);
-      docs.push({
-        id: `event:${lang}:${slug}`,
-        lang,
-        type: 'event',
-        title: entry.data.title,
-        excerpt: entry.data.excerpt,
-        url: pathFor(lang, '/events'),
-        body: markdownToText(entry.body ?? ''),
-      });
+    if (EVENTS_ENABLED) {
+      const events = localizeAll(await getCollection('events'), lang);
+      for (const entry of events) {
+        const slug = slugOf(entry.id);
+        docs.push({
+          id: `event:${lang}:${slug}`,
+          lang,
+          type: 'event',
+          title: entry.data.title,
+          excerpt: entry.data.excerpt,
+          url: pathFor(lang, '/events'),
+          body: markdownToText(entry.body ?? ''),
+        });
+      }
     }
 
     const wiki = localizeAll(await getCollection('wiki'), lang);

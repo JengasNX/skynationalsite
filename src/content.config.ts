@@ -30,7 +30,7 @@ const events = defineCollection({
     timezone: z.string().default('UTC'),
     type: z.enum(['group-flight', 'training', 'meetup']),
     route: z.string().optional(),
-    network: z.enum(['VATSIM', 'IVAO']).optional(),
+    network: z.enum(['VATSIM']).optional(),
     link: z.string().default(''),
     excerpt: z.string(),
   }),

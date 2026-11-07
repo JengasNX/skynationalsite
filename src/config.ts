@@ -10,19 +10,26 @@ export const SITE = {
   repo: 'JengasNX/skynationalsite',
   url: 'https://jengasnx.github.io/skynationalsite',
   tagline: {
-    ru: 'Международное авиационное сообщество пилотов',
-    en: 'International community of virtual pilots',
+    ru: 'Авиасообщество пилотов VATSIM',
+    en: 'VATSIM pilots community',
   },
   description: {
-    ru: 'SkyNational — международное авиационное сообщество для пилотов VATSIM, энтузиастов авиации и всех, кто мечтает о небе.',
-    en: 'SkyNational is an international aviation community for VATSIM pilots, aviation enthusiasts and everyone who dreams of the sky.',
+    ru: 'SkyNational — сообщество виртуальных пилотов VATSIM: совместные полёты, обучение новичков и живое комьюнити.',
+    en: 'SkyNational is a community for VATSIM pilots: group flights, pilot training and a lively community.',
   },
   about: {
-    ru: 'SkyNational — это международное авиационное сообщество, созданное для пилотов VATSIM, энтузиастов авиации и всех, кто мечтает о небе. Мы объединяем людей с разных концов света — от начинающих виртуальных пилотов до опытных пилотов, которые знают, как управлять самолётом в сложных ситуациях.',
-    en: 'SkyNational is an international aviation community created for VATSIM pilots, aviation enthusiasts and everyone who dreams of the sky. We bring together people from all over the world — from beginner virtual pilots to experienced pilots who know how to handle an aircraft in difficult situations.',
+    ru: 'SkyNational — сообщество пилотов VATSIM. Мы летаем вместе, разбираем полёты и помогаем новичкам спокойно выйти в сеть: без гонки за звёздами, с понятными правилами и поддержкой на каждом шаге.',
+    en: 'SkyNational is a community for VATSIM pilots. We fly together, review our flights and help newcomers get online with confidence — clear rules and support at every step.',
   },
-  networks: ['VATSIM', 'IVAO'],
+  networks: ['VATSIM'],
 } as const;
+
+/**
+ * Заявки на события сейчас отключены: на сайте показывается
+ * «событий не ожидается», а содержимое events остаётся в контенте
+ * на будущее. Переключите в true, когда появятся реальные слоты.
+ */
+export const EVENTS_ENABLED = false;
 
 export const DISCORD = {
   /** TODO: ID сервера Discord — включает счётчик онлайна на сайте */
@@ -46,7 +53,6 @@ export const SOCIALS: Social[] = [
   { id: 'discord', label: 'Discord', url: DISCORD.invite },
   { id: 'telegram', label: 'Telegram', url: '' },
   { id: 'vatsim', label: 'VATSIM', url: 'https://www.vatsim.net' },
-  { id: 'ivao', label: 'IVAO', url: 'https://www.ivao.aero' },
   { id: 'youtube', label: 'YouTube', url: '' },
   { id: 'twitch', label: 'Twitch', url: '' },
 ];

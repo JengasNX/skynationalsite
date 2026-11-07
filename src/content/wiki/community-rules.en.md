@@ -21,9 +21,9 @@ This policy describes how we live and work together. It is binding for every mem
 - Do not earn an AVOID flag: no reason to be avoided means no flag.
 - Flight data (aircraft type, route, flight level) must match what is actually being flown.
 
-## Following VATSIM and IVAO rules
+## Following VATSIM rules
 
-We work inside the networks, not on top of them: VATSIM and IVAO rules, controller instructions and standard procedure take priority over any member's preferences. Not knowing the network code is no excuse — read the official network documents before your first flight.
+We work inside the network, not on top of it: VATSIM rules, controller instructions and standard procedure take priority over any member's preferences. Not knowing the network code is no excuse — read the official network documents before your first flight.
 
 ## Confidentiality
 

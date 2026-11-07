@@ -53,10 +53,10 @@ export const en: Dict = {
     meetup: 'Meetup',
   },
   home: {
-    eyebrow: 'VATSIM · IVAO · International community',
+    eyebrow: 'VATSIM · International community',
     title: 'SkyNational Community',
     subtitle:
-      'An international aviation community for VATSIM pilots, aviation enthusiasts and everyone who dreams of the sky.',
+      'A community for VATSIM pilots: group flights, plain-language explanations and people you actually enjoy flying with.',
     ctaPrimary: 'Join us',
     ctaSecondary: 'Latest news',
     scroll: 'Scroll down',
@@ -65,7 +65,7 @@ export const en: Dict = {
     aboutLink: 'More about SkyNational',
     stats: {
       networks: 'Networks',
-      networksValue: 'VATSIM and IVAO',
+      networksValue: 'VATSIM',
       roles: 'Open positions',
       rolesValue: 'in the team',
       audience: 'Built for',
@@ -77,32 +77,32 @@ export const en: Dict = {
     newsTitle: 'Latest news',
     eventLabel: 'Up next',
     eventTitle: 'Next event',
-    eventNone: 'Events are being prepared — check back later.',
+    eventNone: 'No events are planned at the moment.',
     startsIn: 'Starts in',
     units: { days: 'd', hours: 'h', minutes: 'm', seconds: 's' },
     vacanciesLabel: 'Team',
     vacanciesTitle: 'We are looking for you',
     vacanciesText:
-      'SkyNational is growing, and we are looking for people who want to build an aviation community with us.',
+      'The SkyNational team is growing — open roles in moderation, support and newcomer training.',
     openRoles: 'open roles',
     ctaTitle: 'Ready for take-off?',
     ctaText:
-      'Fill in the application and become part of SkyNational Community. We are looking for people who share a love for the sky.',
+      'Fill in a short application — we reply to every request in Discord and help you get to your first group flight.',
     ctaBtn: 'Fill the application',
   },
   about: {
     title: 'About SkyNational',
     subtitle: 'Who we are, what we aim for and how we are structured.',
     lead:
-      'SkyNational is an international aviation community created for VATSIM pilots, aviation enthusiasts and everyone who dreams of the sky.',
+      'SkyNational is a community for VATSIM pilots. We fly together, explain things in plain language and skip the unnecessary bureaucracy.',
     missionLabel: 'Mission',
-    missionTitle: 'A community built around the sky',
+    missionTitle: 'Learn, fly, grow',
     missionText:
-      'We bring together people from all over the world — from beginner virtual pilots to experienced pilots who know how to handle an aircraft in difficult situations. Our goal is an environment where you can learn, fly together and grow.',
+      'What matters to us: a newcomer’s first online flight should not feel scary, and an experienced pilot should always have someone to fly an interesting route with. Everything else — the rules, the roles, the wiki pages — exists to serve that goal.',
     networksLabel: 'Networks',
-    networksTitle: 'VATSIM and IVAO',
+    networksTitle: 'VATSIM',
     networksText:
-      'We fly in the open online aviation networks: we follow the rules, talk to air traffic controllers and respect everyone else sharing the sky.',
+      'We fly in the open online aviation network: we follow the rules, talk to air traffic controllers and respect everyone else sharing the sky.',
     structureLabel: 'Structure',
     structureTitle: 'How the community works',
     structureText:
@@ -153,7 +153,7 @@ export const en: Dict = {
     details: 'Details',
     starts: 'Starts',
     ends: 'Ends',
-    empty: 'Events are being prepared — check back later.',
+    empty: 'No events are planned at the moment.',
     network: 'Network',
     route: 'Route',
     time: 'Time',
@@ -203,7 +203,7 @@ export const en: Dict = {
       tz: 'Timezone / region',
       tzPh: 'UTC+3, Moscow',
       experience: 'Experience & hours',
-      experiencePh: 'Simulator, VATSIM/IVAO experience, previous communities',
+      experiencePh: 'Simulator, VATSIM experience, previous communities',
       motivation: 'Motivation',
       motivationPh: 'Why do you want this role?',
       links: 'Profile links',
@@ -261,13 +261,13 @@ export const en: Dict = {
     open: 'Search',
   },
   footer: {
-    tagline: 'International community of VATSIM and IVAO pilots.',
+    tagline: 'VATSIM pilots community.',
     navTitle: 'Sections',
     communityTitle: 'Community',
     followTitle: 'Follow us',
     rights: 'All rights reserved.',
     disclaimer:
-      'This site is not affiliated with VATSIM.net or IVAO. All trademarks belong to their respective owners.',
+      'This site is not affiliated with VATSIM.net. All trademarks belong to their respective owners.',
     builtWith: 'Made for SkyNational Community',
   },
   discord: {

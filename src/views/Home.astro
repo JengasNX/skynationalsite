@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import { SITE } from '../config';
+import { SITE, DISCORD, EVENTS_ENABLED } from '../config';
 import { dicts } from '../i18n';
 import { localizeAll } from '../utils/content';
 import { asset, pathFor, type Lang } from '../utils/links';
@@ -23,9 +23,11 @@ const news = localizeAll(await getCollection('news'), lang)
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
   .slice(0, 3);
 
-const events = localizeAll(await getCollection('events'), lang).sort(
-  (a, b) => a.data.date.getTime() - b.data.date.getTime(),
-);
+const events = EVENTS_ENABLED
+  ? localizeAll(await getCollection('events'), lang).sort(
+      (a, b) => a.data.date.getTime() - b.data.date.getTime(),
+    )
+  : [];
 const now = Date.now();
 const nextEvent = events.find((e) => e.data.date.getTime() > now - 4 * 3600 * 1000);
 
@@ -66,8 +68,9 @@ const stats = [
           <Icon name="plane" size={18} />
           {dict.home.ctaPrimary}
         </a>
-        <a class="btn btn--outline-light btn--lg" href={pathFor(lang, '/news')}>
-          {dict.home.ctaSecondary}
+        <a class="btn btn--outline-light btn--lg" href={DISCORD.invite || pathFor(lang, '/contacts')}>
+          <Icon name="discord" size={18} />
+          Discord
         </a>
       </div>
 

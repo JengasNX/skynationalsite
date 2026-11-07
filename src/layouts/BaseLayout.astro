@@ -76,6 +76,12 @@ const ogImage = `${SITE.url}${image.startsWith('/') ? image : `/${image}`}`;
         }
         document.documentElement.classList.add('js');
         document.documentElement.classList.add('is-loading');
+        try {
+          // Show the fancy intro loader only on the first page of the session.
+          if (sessionStorage.getItem('skn-loader-shown')) {
+            document.documentElement.classList.add('loader-skip');
+          }
+        } catch (e) {}
       })();
     </script>
 
@@ -115,13 +121,19 @@ const ogImage = `${SITE.url}${image.startsWith('/') ? image : `/${image}`}`;
       // Hide the page loader shortly after full load (min display ~650ms, max 2.5s).
       {
         const loader = document.getElementById('page-loader');
-        if (loader) {
+        if (root.classList.contains('loader-skip')) {
+          loader?.remove();
+          root.classList.remove('is-loading');
+        } else if (loader) {
           root.classList.add('is-loading');
           const start = Date.now();
           let hidden = false;
           const hide = () => {
             if (hidden) return;
             hidden = true;
+            try {
+              sessionStorage.setItem('skn-loader-shown', '1');
+            } catch {}
             loader.classList.add('page-loader--hidden');
             root.classList.remove('is-loading');
             window.setTimeout(() => loader.remove(), 600);
@@ -153,6 +165,17 @@ const ogImage = `${SITE.url}${image.startsWith('/') ? image : `/${image}`}`;
           try {
             localStorage.setItem('skn-lang', a.dataset.langLink as string);
           } catch {}
+        });
+        // Animated language switch when the browser cannot do it natively.
+        // With View Transitions supported, the cross-document cross-fade
+        // kicks in automatically and we don't touch the navigation.
+        a.addEventListener('click', (event) => {
+          if (document.startViewTransition) return;
+          event.preventDefault();
+          root.classList.add('lang-leaving');
+          window.setTimeout(() => {
+            window.location.href = a.href;
+          }, 200);
         });
       });
 

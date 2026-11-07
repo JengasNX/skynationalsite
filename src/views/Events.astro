@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import { SITE } from '../config';
+import { SITE, EVENTS_ENABLED } from '../config';
 import { dicts } from '../i18n';
 import { localizeAll } from '../utils/content';
 import type { Lang } from '../utils/links';
@@ -15,9 +15,11 @@ interface Props {
 const { lang } = Astro.props;
 const dict = dicts[lang];
 
-const all = localizeAll(await getCollection('events'), lang).sort(
-  (a, b) => a.data.date.getTime() - b.data.date.getTime(),
-);
+const all = EVENTS_ENABLED
+  ? localizeAll(await getCollection('events'), lang).sort(
+      (a, b) => a.data.date.getTime() - b.data.date.getTime(),
+    )
+  : [];
 
 const now = Date.now();
 const upcoming = all.filter((e) => e.data.date.getTime() > now - 4 * 3600 * 1000);

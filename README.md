@@ -56,7 +56,7 @@ date: 2026-10-17T18:00:00+03:00   # ISO 8601 с таймзоной
 timezone: Europe/Moscow            # IANA-идентификатор часового пояса
 type: group-flight                 # тип события
 route: UUEE — EHAM
-network: VATSIM                    # VATSIM или IVAO
+network: VATSIM                    # сеть полёта
 link: https://discord.gg/...       # ссылка на Discord-ивент (необязательно)
 excerpt: Краткое описание события.
 ---
@@ -73,7 +73,7 @@ excerpt: Краткое описание события.
 | `timezone` | Часовой пояс события (IANA), например `Europe/Moscow` |
 | `type` | Тип: `group-flight` (групповой полёт), `training` (тренировка), `meetup` (встреча) |
 | `route` | Маршрут, например `UUEE — EHAM` |
-| `network` | Сеть: `VATSIM` или `IVAO` |
+| `network` | Сеть: `VATSIM` |
 | `link` | Внешняя ссылка на ивент (необязательно) |
 | `excerpt` | Краткое описание для карточки |
 
