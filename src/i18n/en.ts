@@ -243,7 +243,7 @@ export const en: Dict = {
     subtitle: 'We are always online — pick the platform you prefer.',
     channelsTitle: 'Community platforms',
     channelsText: 'News, announcements and live chat — on Discord and Telegram.',
-    followTitle: 'Also on',
+    followTitle: 'Reach us',
     writeTitle: 'Write to us',
     writeText: 'Questions about the community, partnerships or vacancies — through Discord or Telegram.',
     discordCta: 'Go to Discord',

@@ -238,10 +238,10 @@ export const ru = {
   },
   contacts: {
     title: 'Контакты',
-    subtitle: 'Мы всегда на связи — выбрайте удобную площадку.',
+    subtitle: 'Мы всегда на связи — выберите удобную площадку.',
     channelsTitle: 'Площадки сообщества',
     channelsText: 'Новости, анонсы и живое общение — в Discord и Telegram.',
-    followTitle: 'Мы также',
+    followTitle: 'Мы на связи',
     writeTitle: 'Написать нам',
     writeText: 'Вопрос о сообществе, партнёрстве или вакансии — через Discord или Telegram.',
     discordCta: 'Перейти в Discord',
