@@ -18,6 +18,7 @@ const current = normalize(pagePath);
 const items = [
   { href: '/', label: dict.nav.home },
   { href: '/about', label: dict.nav.about },
+  { href: '/team', label: dict.nav.team },
   { href: '/vacancies', label: dict.nav.vacancies },
   { href: '/news', label: dict.nav.news },
   { href: '/events', label: dict.nav.events },
@@ -66,7 +67,7 @@ const items = [
 
     <div class="header-actions">
       <button class="icon-btn search-btn" type="button" data-search-open aria-label={dict.a11y.search}>
-        <Icon name="search" size={17} />
+        <span class="search-emoji" aria-hidden="true">🔍</span>
         <kbd>Ctrl K</kbd>
       </button>
 

@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { dicts } from '../../i18n';
+import TeamGrid from '../../components/TeamGrid.astro';
+import PageHead from '../../components/PageHead.astro';
+import CTABand from '../../components/CTABand.astro';
+
+const lang = 'en' as const;
+const dict = dicts[lang];
+---
+<BaseLayout lang={lang} title={dict.team.title} pagePath="/team">
+  <PageHead eyebrow={dict.nav.team} title={dict.team.title} sub={dict.team.subtitle} code="SKN" />
+  <TeamGrid lang={lang} />
+  <CTABand
+    lang={lang}
+    title={dict.home.ctaTitle}
+    text={dict.home.ctaText}
+    label={dict.nav.join}
+    href="/join"
+  />
+</BaseLayout>

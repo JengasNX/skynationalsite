@@ -2,6 +2,7 @@ export const ru = {
   nav: {
     home: 'Главная',
     about: 'О сообществе',
+    team: 'Команда',
     vacancies: 'Вакансии',
     news: 'Новости',
     events: 'События',
@@ -115,8 +116,10 @@ export const ru = {
     galleryLabel: 'Галерея',
     galleryTitle: 'Кадры наших полётов',
     galleryText: 'Фото и скриншоты участников сообщества.',
-    teamLabel: 'О нас',
-    teamTitle: 'Международная команда пилотов',
+  },
+  team: {
+    title: 'Команда',
+    subtitle: 'Руководство и персонал SkyNational — люди, которые делают сообщество.',
   },
   vacancies: {
     title: 'Вакансии и команда',

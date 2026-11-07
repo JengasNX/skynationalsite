@@ -1,14 +1,11 @@
 ---
 /**
- * "International team" section in the reference style:
- * small labelled square + eyebrow, huge uppercase heading with an accent arrow,
- * then a row of member cards: photo, name in caps, short bio.
- * Photos come from public/assets/team/<id>.jpg; until they exist a styled
- * fallback with initials is shown.
+ * Team cards for the dedicated /team page: photo, name in caps with a role
+ * badge, short bio. Photos come from public/assets/team/<id>.<any-ext>;
+ * until they exist a styled fallback with initials is shown.
  */
 import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { dicts } from '../i18n';
 import { asset, type Lang } from '../utils/links';
 import { TEAM_MEMBERS } from '../data/team';
 
@@ -17,7 +14,6 @@ interface Props {
 }
 
 const { lang } = Astro.props;
-const dict = dicts[lang];
 
 const publicRoot = fileURLToPath(new URL('../../public', import.meta.url));
 
@@ -33,8 +29,6 @@ const photoFor = (id: string): string | null => {
   return null;
 };
 
-const hasPhoto = (id: string) => photoFor(id) !== null;
-
 const initialsOf = (name: string) =>
   name
     .replace(/[^\p{L}\p{N}\s]/gu, '')
@@ -46,54 +40,27 @@ const initialsOf = (name: string) =>
     .toUpperCase();
 ---
 
-<section class="team" id="team">
+<section class="section">
   <div class="container">
-    <div class="team__head" data-reveal>
-      <span class="team__label">
-        <span class="team__sq" aria-hidden="true"></span>
-        {dict.about.teamLabel}
-      </span>
-      <h2 class="team__title">
-        {dict.about.teamTitle}
-        <svg
-          class="team__arrow"
-          width="34"
-          height="34"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2.2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M19 19L5 5"></path>
-          <path d="M5 15V5h10"></path>
-        </svg>
-      </h2>
-    </div>
-
     <div class="team__grid">
       {
         TEAM_MEMBERS.map((member, index) => (
           <article class="team-card" data-reveal style={`--reveal-delay: ${index * 110}ms;`}>
             <div class="team-card__media">
-              {
-                photoFor(member.id) ? (
-                  <img
-                    src={asset(photoFor(member.id)!)}
-                    alt={member.name}
-                    loading="lazy"
-                    decoding="async"
-                    width="520"
-                    height="420"
-                  />
-                ) : (
-                  <div class="team-card__fallback" aria-label={member.name}>
-                    <span>{initialsOf(member.name)}</span>
-                  </div>
-                )
-              }
+              {photoFor(member.id) ? (
+                <img
+                  src={asset(photoFor(member.id)!)}
+                  alt={member.name}
+                  loading="lazy"
+                  decoding="async"
+                  width="520"
+                  height="420"
+                />
+              ) : (
+                <div class="team-card__fallback" aria-label={member.name}>
+                  <span>{initialsOf(member.name)}</span>
+                </div>
+              )}
             </div>
             <h3 class="team-card__name">
               <span class="team-card__role">{member.role}</span>
@@ -108,61 +75,6 @@ const initialsOf = (name: string) =>
 </section>
 
 <style>
-  .team {
-    padding-block: 4.5rem 0.5rem;
-  }
-
-  .team__head {
-    margin-bottom: 2.75rem;
-  }
-
-  .team__label {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 1.4rem;
-  }
-
-  .team__sq {
-    width: 9px;
-    height: 9px;
-    background: var(--text);
-  }
-
-  .team__title {
-    margin: 0;
-    font-size: clamp(2rem, 5.4vw, 3.6rem);
-    font-weight: 800;
-    line-height: 1.04;
-    letter-spacing: -0.015em;
-    text-transform: uppercase;
-    color: var(--text);
-    max-width: 18ch;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 1rem;
-  }
-
-  .team__arrow {
-    flex: none;
-    color: var(--accent);
-    height: auto;
-    width: clamp(24px, 3.4vw, 34px);
-    margin-bottom: 0.3rem;
-    transform: rotate(-90deg);
-    transition: transform 0.35s ease;
-  }
-
-  .team__head:hover .team__arrow {
-    transform: rotate(-104deg);
-  }
-
   .team__grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -248,8 +160,7 @@ const initialsOf = (name: string) =>
 
   @media (prefers-reduced-motion: reduce) {
     .team-card__media img,
-    .team-card__fallback,
-    .team__arrow {
+    .team-card__fallback {
       transition: none !important;
     }
   }

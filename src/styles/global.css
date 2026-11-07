@@ -569,6 +569,19 @@ button {
   color: var(--muted);
 }
 
+/* Emoji search button */
+.search-btn .search-emoji {
+  display: inline-block;
+  font-size: 1.05rem;
+  line-height: 1;
+  filter: saturate(1.15);
+  transition: transform 0.25s ease;
+}
+
+.search-btn:hover .search-emoji {
+  transform: scale(1.28) rotate(-8deg);
+}
+
 .lang-switch {
   display: inline-flex;
   border: 1px solid var(--border);

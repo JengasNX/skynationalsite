@@ -4,6 +4,7 @@ export const en: Dict = {
   nav: {
     home: 'Home',
     about: 'About',
+    team: 'Team',
     vacancies: 'Vacancies',
     news: 'News',
     events: 'Events',
@@ -117,8 +118,10 @@ export const en: Dict = {
     galleryLabel: 'Gallery',
     galleryTitle: 'Frames from our flights',
     galleryText: 'Photos and screenshots shared by community members.',
-    teamLabel: 'About us',
-    teamTitle: 'International team of pilots',
+  },
+  team: {
+    title: 'Team',
+    subtitle: 'Leadership and staff of SkyNational — the people who make the community.',
   },
   vacancies: {
     title: 'Vacancies & team',

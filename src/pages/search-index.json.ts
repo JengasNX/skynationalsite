@@ -26,6 +26,7 @@ export const GET: APIRoute = async () => {
     const pages = [
       { path: '/', title: SITE.name, excerpt: SITE.description[lang] },
       { path: '/about', title: dict.about.title, excerpt: dict.about.subtitle },
+      { path: '/team', title: dict.team.title, excerpt: dict.team.subtitle },
       { path: '/vacancies', title: dict.vacancies.title, excerpt: dict.vacancies.subtitle },
       { path: '/news', title: dict.news.title, excerpt: dict.news.subtitle },
       { path: '/events', title: dict.events.title, excerpt: dict.events.subtitle },
