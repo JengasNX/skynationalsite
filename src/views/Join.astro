@@ -1,0 +1,55 @@
+---
+import { dicts } from '../i18n';
+import { pathFor, type Lang } from '../utils/links';
+import PageHead from '../components/PageHead.astro';
+import ApplicationForm from '../components/ApplicationForm.astro';
+import DiscordOnline from '../components/DiscordOnline.astro';
+import Icon from '../components/Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const dict = dicts[lang];
+---
+
+<PageHead eyebrow={dict.nav.join} title={dict.join.title} sub={dict.join.subtitle} code="CVR" />
+
+<section class="section">
+  <div class="container split" style="align-items: start;">
+    <div class="stack" data-reveal>
+      <span class="eyebrow">{dict.join.formLabel}</span>
+      <ApplicationForm lang={lang} />
+    </div>
+
+    <aside class="stack" style="gap: 1.1rem;" data-reveal>
+      <div class="feature">
+        <span class="feature__icon"><Icon name="send" size={20} /></span>
+        <h3>{dict.contacts.channelsTitle}</h3>
+        <p>{dict.join.subtitle}</p>
+        <p class="form-note">{dict.join.note}</p>
+      </div>
+
+      <div class="feature">
+        <span class="feature__icon"><Icon name="users" size={20} /></span>
+        <h3>{dict.join.otherRoles}</h3>
+        <p>{dict.vacancies.subtitle}</p>
+        <p>
+          <a class="link-arrow" href={pathFor(lang, '/vacancies')}>{dict.common.viewAll}</a>
+        </p>
+      </div>
+
+      <div class="feature">
+        <span class="feature__icon"><Icon name="info" size={20} /></span>
+        <h3>{dict.contacts.writeTitle}</h3>
+        <p>{dict.contacts.writeText}</p>
+        <p>
+          <a class="link-arrow" href={pathFor(lang, '/contacts')}>{dict.nav.contacts}</a>
+        </p>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<DiscordOnline lang={lang} />

@@ -1,0 +1,81 @@
+---
+import { getCollection } from 'astro:content';
+import { SITE } from '../config';
+import { dicts } from '../i18n';
+import { localizeAll } from '../utils/content';
+import type { Lang } from '../utils/links';
+import PageHead from '../components/PageHead.astro';
+import EventCard from '../components/EventCard.astro';
+import CTABand from '../components/CTABand.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const dict = dicts[lang];
+
+const all = localizeAll(await getCollection('events'), lang).sort(
+  (a, b) => a.data.date.getTime() - b.data.date.getTime(),
+);
+
+const now = Date.now();
+const upcoming = all.filter((e) => e.data.date.getTime() > now - 4 * 3600 * 1000);
+const past = all
+  .filter((e) => e.data.date.getTime() <= now - 4 * 3600 * 1000)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<PageHead
+  eyebrow={dict.nav.events}
+  title={dict.events.title}
+  sub={dict.events.subtitle}
+  code={SITE.code}
+/>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">{dict.home.eventLabel}</span>
+        <h2 class="section-title">{dict.events.upcoming}</h2>
+      </div>
+      <span class="chip chip--accent">{upcoming.length}</span>
+    </div>
+
+    {
+      upcoming.length > 0 ? (
+        <div class="stack" style="gap: 1.1rem;">
+          {upcoming.map((entry) => (
+            <EventCard lang={lang} entry={entry} />
+          ))}
+        </div>
+      ) : (
+        <p class="empty-state">{dict.events.empty}</p>
+      )
+    }
+  </div>
+</section>
+
+{
+  past.length > 0 && (
+    <section class="section section--alt">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">{dict.nav.news}</span>
+            <h2 class="section-title">{dict.events.past}</h2>
+          </div>
+          <span class="chip">{past.length}</span>
+        </div>
+        <div class="stack" style="gap: 1.1rem; opacity: 0.92;">
+          {past.map((entry) => (
+            <EventCard lang={lang} entry={entry} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<CTABand lang={lang} title={dict.home.ctaTitle} text={dict.home.ctaText} />

@@ -1,0 +1,131 @@
+---
+import { SITE } from '../config';
+import { dicts } from '../i18n';
+import { asset, pathFor, type Lang } from '../utils/links';
+import PageHead from '../components/PageHead.astro';
+import Gallery from '../components/Gallery.astro';
+import CTABand from '../components/CTABand.astro';
+import Icon from '../components/Icon.astro';
+import { GALLERY } from '../data/gallery';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const dict = dicts[lang];
+
+const pillars = [
+  {
+    icon: 'shield' as const,
+    label: dict.about.missionLabel,
+    title: dict.about.missionTitle,
+    text: dict.about.missionText,
+  },
+  {
+    icon: 'globe' as const,
+    label: dict.about.networksLabel,
+    title: dict.about.networksTitle,
+    text: dict.about.networksText,
+  },
+  {
+    icon: 'users' as const,
+    label: dict.about.structureLabel,
+    title: dict.about.structureTitle,
+    text: dict.about.structureText,
+  },
+];
+---
+
+<PageHead
+  eyebrow={dict.about.missionLabel}
+  title={dict.about.title}
+  sub={dict.about.subtitle}
+  code="SKN"
+/>
+
+<section class="section">
+  <div class="container split">
+    <div class="stack" data-reveal>
+      <span class="eyebrow">{SITE.shortName}</span>
+      <p class="lead">{dict.about.lead}</p>
+      <p class="muted">{SITE.about[lang]}</p>
+      <div class="row">
+        <a class="btn btn--primary" href={pathFor(lang, '/join')}>{dict.nav.join}</a>
+        <a class="btn btn--ghost" href={pathFor(lang, '/vacancies')}>{dict.nav.vacancies}</a>
+      </div>
+    </div>
+
+    <div class="split__media" data-reveal style="--reveal-delay: 120ms;">
+      <img
+        src={asset('/assets/gallery-united-tail.jpg')}
+        alt={dict.about.galleryTitle}
+        loading="lazy"
+        decoding="async"
+        width="1600"
+        height="670"
+      />
+      <span class="split__badge">{SITE.networks.join(' · ')}</span>
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt">
+  <div class="container">
+    <div class="grid grid--3">
+      {
+        pillars.map((pillar, index) => (
+          <article class="feature" data-reveal style={`--reveal-delay: ${index * 90}ms;`}>
+            <span class="feature__icon">
+              <Icon name={pillar.icon} size={20} />
+            </span>
+            <span class="eyebrow">{pillar.label}</span>
+            <h3>{pillar.title}</h3>
+            <p>{pillar.text}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">{dict.about.valuesLabel}</span>
+        <h2 class="section-title">{dict.about.valuesTitle}</h2>
+      </div>
+    </div>
+
+    <div class="grid grid--4">
+      {
+        dict.about.values.map((value, index) => (
+          <div class="stat" data-reveal style={`--reveal-delay: ${index * 80}ms;`}>
+            <span class="stat__value">0{index + 1}</span>
+            <strong>{value.title}</strong>
+            <span class="muted" style="font-size: 0.92rem;">
+              {value.text}
+            </span>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">{dict.about.galleryLabel}</span>
+        <h2 class="section-title">{dict.about.galleryTitle}</h2>
+        <p class="section-sub">{dict.about.galleryText}</p>
+      </div>
+    </div>
+
+    <Gallery lang={lang} items={GALLERY} />
+  </div>
+</section>
+
+<CTABand lang={lang} title={dict.home.ctaTitle} text={dict.home.ctaText} />

@@ -1,0 +1,112 @@
+---
+import { SOCIALS, SITE, DISCORD } from '../config';
+import { dicts } from '../i18n';
+import { pathFor, type Lang } from '../utils/links';
+import PageHead from '../components/PageHead.astro';
+import DiscordOnline from '../components/DiscordOnline.astro';
+import CTABand from '../components/CTABand.astro';
+import Icon from '../components/Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const dict = dicts[lang];
+
+const joinHref = pathFor(lang, '/join');
+const cards = SOCIALS.map((social) => {
+  const url = social.url.trim();
+  const isDiscord = social.id === 'discord';
+  return {
+    ...social,
+    href: url || (isDiscord ? joinHref : ''),
+    pending: !url,
+    cta: isDiscord ? dict.contacts.discordCta : social.label,
+  };
+});
+---
+
+<PageHead
+  eyebrow={dict.nav.contacts}
+  title={dict.contacts.title}
+  sub={dict.contacts.subtitle}
+  code="INFO"
+/>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">{dict.footer.followTitle}</span>
+        <h2 class="section-title">{dict.contacts.channelsTitle}</h2>
+        <p class="section-sub">{dict.contacts.channelsText}</p>
+      </div>
+    </div>
+
+    <div class="grid grid--3">
+      {
+        cards.map((card, index) => (
+          <article class="feature" data-reveal style={`--reveal-delay: ${index * 70}ms;`}>
+            <div class="row" style="justify-content: space-between;">
+              <span class="feature__icon">
+                <Icon name={card.pending ? 'info' : 'external'} size={18} />
+              </span>
+              <span class="chip">{card.label}</span>
+            </div>
+            <h3>{card.label}</h3>
+            <p>{card.pending ? dict.contacts.pending : SITE.name}</p>
+            <div class="card__footer">
+              {card.href ? (
+                <a
+                  class="link-arrow"
+                  href={card.href}
+                  target={card.pending ? undefined : '_blank'}
+                  rel={card.pending ? undefined : 'noopener noreferrer'}
+                >
+                  {card.cta}
+                </a>
+              ) : (
+                <span class="muted" style="font-size: 0.85rem;">
+                  —
+                </span>
+              )}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt">
+  <div class="container split">
+    <div class="stack" data-reveal>
+      <span class="eyebrow">{dict.contacts.writeTitle}</span>
+      <h2 class="section-title">{dict.nav.join}</h2>
+      <p class="lead">{dict.contacts.writeText}</p>
+      <div class="row">
+        <a class="btn btn--primary btn--lg" href={joinHref}>
+          <Icon name="send" size={17} />
+          {dict.nav.join}
+        </a>
+        <a class="btn btn--ghost" href={pathFor(lang, '/vacancies')}>{dict.nav.vacancies}</a>
+      </div>
+      <p class="form-note">{dict.contacts.note}</p>
+    </div>
+
+    <div class="feature" data-reveal style="--reveal-delay: 120ms;">
+      <span class="feature__icon"><Icon name="globe" size={20} /></span>
+      <h3>{SITE.tagline[lang]}</h3>
+      <p>{SITE.about[lang]}</p>
+      <div class="meta" style="margin-top: 0.5rem;">
+        {SITE.networks.join(' · ')}
+        {DISCORD.guildId ? '' : ''}
+      </div>
+    </div>
+  </div>
+</section>
+
+<DiscordOnline lang={lang} />
+
+<CTABand lang={lang} title={dict.home.ctaTitle} text={dict.home.ctaText} />

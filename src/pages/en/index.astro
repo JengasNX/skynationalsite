@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HomeView from '../../views/Home.astro';
+import { SITE } from '../../config';
+
+const lang = 'en' as const;
+---
+<BaseLayout lang={lang} title={SITE.name} pagePath="/">
+  <HomeView lang={lang} />
+</BaseLayout>

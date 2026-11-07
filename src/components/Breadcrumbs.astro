@@ -1,0 +1,22 @@
+---
+import type { Lang } from '../utils/links';
+
+export type Crumb = { label: string; href?: string };
+
+interface Props {
+  lang?: Lang;
+  items: Crumb[];
+}
+
+const { items } = Astro.props;
+---
+
+<nav aria-label="Breadcrumb">
+  <ol class="breadcrumbs">
+    {
+      items.map((item) => (
+        <li>{item.href ? <a href={item.href}>{item.label}</a> : <span>{item.label}</span>}</li>
+      ))
+    }
+  </ol>
+</nav>

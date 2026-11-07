@@ -1,0 +1,39 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { pathFor, type Lang } from '../utils/links';
+import { slugOf } from '../utils/content';
+import { dicts } from '../i18n';
+
+interface Props {
+  lang: Lang;
+  entry: CollectionEntry<'wiki'>;
+}
+
+const { lang, entry } = Astro.props;
+const dict = dicts[lang];
+const { title, category, excerpt } = entry.data;
+const href = pathFor(lang, `/wiki/${slugOf(entry.id)}`);
+---
+
+<article
+  class="card"
+  data-reveal
+  data-wiki-card
+  data-cat={category}
+  data-text={`${title} ${excerpt}`.toLowerCase()}
+>
+  <div class="card__body">
+    <div class="row" style="justify-content: space-between;">
+      <span class="chip chip--accent">{dict.wiki.categoryNames[category]}</span>
+      <span class="mono muted" style="font-size: 0.72rem;">#{String(entry.data.order).padStart(2, '0')}</span>
+    </div>
+    <h3 class="card__title">
+      <a href={href}>{title}</a>
+    </h3>
+    <p class="card__excerpt">{excerpt}</p>
+    <div class="card__footer">
+      <span class="muted" style="font-size: 0.82rem;">{dict.wiki.category}</span>
+      <span class="link-arrow" aria-hidden="true">{dict.common.readMore}</span>
+    </div>
+  </div>
+</article>

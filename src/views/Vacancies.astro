@@ -1,0 +1,69 @@
+---
+import { dicts } from '../i18n';
+import type { Lang } from '../utils/links';
+import { SITE } from '../config';
+import { VACANCIES, TEAM } from '../data/vacancies';
+import PageHead from '../components/PageHead.astro';
+import VacancyCard from '../components/VacancyCard.astro';
+import CTABand from '../components/CTABand.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const dict = dicts[lang];
+
+const openCount = VACANCIES.filter((v) => v.open).length;
+---
+
+<PageHead eyebrow={dict.nav.vacancies} title={dict.vacancies.title} sub={dict.vacancies.subtitle} code="HR">
+  <div class="row">
+    <span class="chip chip--accent">{openCount} {dict.vacancies.allPositions}</span>
+    <span class="chip">{SITE.networks.join(' · ')}</span>
+  </div>
+</PageHead>
+
+<section class="section">
+  <div class="container">
+    <div class="grid grid--3">
+      {VACANCIES.map((vacancy) => <VacancyCard lang={lang} vacancy={vacancy} />)}
+    </div>
+    <p class="form-note" style="margin-top: 1.75rem;">{dict.vacancies.note}</p>
+  </div>
+</section>
+
+<section class="section section--alt">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">{dict.nav.vacancies}</span>
+        <h2 class="section-title">{dict.vacancies.teamTitle}</h2>
+      </div>
+    </div>
+
+    {
+      TEAM.length > 0 ? (
+        <div class="grid grid--3">
+          {TEAM.map((member) => (
+            <article class="feature" data-reveal>
+              <span class="vacancy-card__code">{member.role}</span>
+              <h3>{member.name[lang]}</h3>
+              <p>{member.note[lang]}</p>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <p class="empty-state">{dict.vacancies.teamEmpty}</p>
+      )
+    }
+  </div>
+</section>
+
+<CTABand
+  lang={lang}
+  title={dict.home.ctaTitle}
+  text={dict.home.ctaText}
+  label={dict.vacancies.apply}
+  href="/join"
+/>

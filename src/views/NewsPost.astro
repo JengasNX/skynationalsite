@@ -1,0 +1,90 @@
+---
+import { getCollection, render } from 'astro:content';
+import { dicts, formatDate } from '../i18n';
+import { localize, localizeAll, slugOf } from '../utils/content';
+import { asset, pathFor, type Lang } from '../utils/links';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import NewsCard from '../components/NewsCard.astro';
+
+interface Props {
+  lang: Lang;
+  slug: string;
+}
+
+const { lang, slug } = Astro.props;
+const dict = dicts[lang];
+
+const entries = await getCollection('news');
+const entry = localize(entries, slug, lang);
+if (!entry) throw new Error(`News entry not found: ${slug}`);
+
+const { Content } = await render(entry);
+const { title, date, tags, cover, excerpt } = entry.data;
+
+const related = localizeAll(entries, lang)
+  .filter((e) => slugOf(e.id) !== slug)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 2);
+---
+
+<section class="page-head" data-code="NEWS">
+  <div class="container page-head__inner">
+    <Breadcrumbs
+      items={[
+        { label: dict.nav.home, href: pathFor(lang, '/') },
+        { label: dict.nav.news, href: pathFor(lang, '/news') },
+        { label: title },
+      ]}
+    />
+    <div class="article-head">
+      <div class="meta">
+        <time datetime={date.toISOString()}>{formatDate(date, lang)}</time>
+        {
+          tags.map((tag) => <span class="tag">{dict.tags[tag]}</span>)
+        }
+      </div>
+      <h1>{title}</h1>
+      <p class="page-head__sub">{excerpt}</p>
+    </div>
+  </div>
+</section>
+
+<article class="section">
+  <div class="container">
+    {
+      cover && (
+        <div class="article-cover">
+          <img src={asset(cover)} alt="" width="1600" height="900" decoding="async" />
+        </div>
+      )
+    }
+
+    <div class="prose" style="margin-top: 2rem;">
+      <Content />
+    </div>
+
+    <p style="margin-top: 2.5rem;">
+      <a class="link-arrow" href={pathFor(lang, '/news')}>{dict.news.title}</a>
+    </p>
+  </div>
+</article>
+
+{
+  related.length > 0 && (
+    <section class="section section--alt">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">{dict.nav.news}</span>
+            <h2 class="section-title">{dict.news.related}</h2>
+          </div>
+        </div>
+        <div class="grid grid--3">
+          {related.map((item) => (
+            <NewsCard lang={lang} entry={item} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}

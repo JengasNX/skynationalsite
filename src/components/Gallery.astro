@@ -1,0 +1,76 @@
+---
+import Icon from './Icon.astro';
+import type { GalleryItem } from '../data/gallery';
+import { asset, type Lang } from '../utils/links';
+import { dicts } from '../i18n';
+
+interface Props {
+  lang: Lang;
+  items: GalleryItem[];
+}
+
+const { lang, items } = Astro.props;
+const dict = dicts[lang];
+---
+
+<div class="gallery">
+  {
+    items.map((item) => (
+      <button
+        type="button"
+        class:list={['gallery__item', { 'gallery__item--wide': item.shape === 'wide' }]}
+        data-gallery-item
+        data-src={asset(item.file)}
+        data-caption={item.caption[lang]}
+        aria-label={item.caption[lang]}
+        data-reveal=""
+      >
+        <img
+          src={asset(item.file)}
+          alt={item.caption[lang]}
+          loading="lazy"
+          decoding="async"
+          width="1600"
+          height="900"
+        />
+        <span class="gallery__caption">
+          {item.caption[lang]}
+          {item.sim && <span class="mono" style="opacity:.75;"> · SIM</span>}
+        </span>
+      </button>
+    ))
+  }
+</div>
+
+<dialog class="lightbox" id="lightbox" aria-label={dict.about.galleryTitle}>
+  <button class="icon-btn lightbox__close" type="button" data-lightbox-close aria-label={dict.nav.close}>
+    <Icon name="close" size={18} />
+  </button>
+  <div class="lightbox__inner">
+    <figure>
+      <img alt="" data-lightbox-img />
+      <figcaption data-lightbox-caption></figcaption>
+    </figure>
+  </div>
+</dialog>
+
+<script>
+  const dialog = document.getElementById('lightbox') as HTMLDialogElement;
+  const img = dialog.querySelector<HTMLImageElement>('[data-lightbox-img]');
+  const caption = dialog.querySelector<HTMLElement>('[data-lightbox-caption]');
+
+  document.querySelectorAll<HTMLElement>('[data-gallery-item]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      if (!img) return;
+      img.src = btn.dataset.src ?? '';
+      img.alt = btn.dataset.caption ?? '';
+      if (caption) caption.textContent = btn.dataset.caption ?? '';
+      if (!dialog.open) dialog.showModal();
+    });
+  });
+
+  dialog.querySelector('[data-lightbox-close]')?.addEventListener('click', () => dialog.close());
+  dialog.addEventListener('click', (event) => {
+    if (event.target === dialog) dialog.close();
+  });
+</script>

@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import WikiPostView from '../../views/WikiPost.astro';
+import { getCollection } from 'astro:content';
+import { slugOf, localize } from '../../utils/content';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('wiki');
+  const slugs = [...new Set(entries.map((entry) => slugOf(entry.id)))].sort();
+  return slugs.map((slug) => ({ params: { slug } }));
+}
+
+const lang = 'ru' as const;
+const slug = Astro.params.slug ?? '';
+const entry = localize(await getCollection('wiki'), slug, lang);
+if (!entry) throw new Error(`Missing wiki entry: ${slug}`);
+---
+
+<BaseLayout
+  lang={lang}
+  title={entry.data.title}
+  description={entry.data.excerpt}
+  pagePath={`/wiki/${slug}`}
+>
+  <WikiPostView lang={lang} slug={slug} />
+</BaseLayout>

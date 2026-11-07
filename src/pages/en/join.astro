@@ -1,0 +1,11 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import JoinView from '../../views/Join.astro';
+import { dicts } from '../../i18n';
+
+const lang = 'en' as const;
+const dict = dicts[lang];
+---
+<BaseLayout lang={lang} title={dict.join.title} pagePath="/join">
+  <JoinView lang={lang} />
+</BaseLayout>

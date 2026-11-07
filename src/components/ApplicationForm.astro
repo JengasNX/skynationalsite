@@ -1,0 +1,416 @@
+---
+import { DISCORD } from '../config';
+import { VACANCIES } from '../data/vacancies';
+import { dicts } from '../i18n';
+import { pathFor, type Lang } from '../utils/links';
+import Icon from './Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const dict = dicts[lang];
+const openVacancies = VACANCIES.filter((v) => v.open);
+const invite = DISCORD.invite.trim();
+
+const cfg = {
+  webhook: DISCORD.webhookUrl.trim(),
+  mentionRole: DISCORD.mentionRoleId.trim(),
+  invite,
+  fallbackUrl: pathFor(lang, '/contacts'),
+  labels: {
+    sending: dict.join.sending,
+    submit: dict.join.submit,
+    copy: dict.join.copy,
+    copied: dict.join.copied,
+    openDiscord: dict.join.openDiscord,
+    required: dict.join.required,
+  },
+  errors: dict.join.errors,
+  messages: {
+    success: dict.join.success,
+    failure: dict.join.failure,
+    offline: dict.join.offline,
+  },
+};
+---
+
+<form class="form" id="application-form" novalidate data-form>
+  <div class="form-grid">
+    <div class="field" data-field="discord">
+      <label class="field__label" for="f-discord">
+        {dict.join.fields.discord}
+        <span class="field__optional">{dict.join.required}</span>
+      </label>
+      <input
+        class="input"
+        id="f-discord"
+        name="discord"
+        type="text"
+        placeholder={dict.join.fields.discordPh}
+        autocomplete="nickname"
+        aria-describedby="e-discord h-discord"
+      />
+      <span class="field__hint" id="h-discord">{dict.join.fields.discordHint}</span>
+      <span class="field__error" id="e-discord" data-error></span>
+    </div>
+
+    <div class="field" data-field="vacancy">
+      <label class="field__label" for="f-vacancy">
+        {dict.join.fields.vacancy}
+        <span class="field__optional">{dict.join.required}</span>
+      </label>
+      <select class="select" id="f-vacancy" name="vacancy" aria-describedby="e-vacancy">
+        <option value="">{dict.join.fields.vacancyPh}</option>
+        {
+          openVacancies.map((v) => (
+            <option value={v.code.toLowerCase()}>
+              {v.code} — {v.title[lang]}
+            </option>
+          ))
+        }
+      </select>
+      <span class="field__error" id="e-vacancy" data-error></span>
+    </div>
+
+    <div class="field" data-field="age">
+      <label class="field__label" for="f-age">
+        {dict.join.fields.age}
+        <span class="field__optional">{dict.join.required}</span>
+      </label>
+      <input
+        class="input"
+        id="f-age"
+        name="age"
+        type="number"
+        min="10"
+        max="99"
+        inputmode="numeric"
+        placeholder={dict.join.fields.agePh}
+        aria-describedby="e-age"
+      />
+      <span class="field__error" id="e-age" data-error></span>
+    </div>
+
+    <div class="field" data-field="tz">
+      <label class="field__label" for="f-tz">
+        {dict.join.fields.tz}
+        <span class="field__optional">{dict.join.required}</span>
+      </label>
+      <input
+        class="input"
+        id="f-tz"
+        name="tz"
+        type="text"
+        placeholder={dict.join.fields.tzPh}
+        aria-describedby="e-tz"
+      />
+      <span class="field__error" id="e-tz" data-error></span>
+    </div>
+
+    <div class="field field--full" data-field="experience">
+      <label class="field__label" for="f-experience">
+        {dict.join.fields.experience}
+        <span class="field__optional">{dict.join.required}</span>
+      </label>
+      <textarea
+        class="textarea"
+        id="f-experience"
+        name="experience"
+        placeholder={dict.join.fields.experiencePh}
+        aria-describedby="e-experience"></textarea>
+      <span class="field__error" id="e-experience" data-error></span>
+    </div>
+
+    <div class="field field--full" data-field="motivation">
+      <label class="field__label" for="f-motivation">
+        {dict.join.fields.motivation}
+        <span class="field__optional">{dict.join.required}</span>
+      </label>
+      <textarea
+        class="textarea"
+        id="f-motivation"
+        name="motivation"
+        placeholder={dict.join.fields.motivationPh}
+        aria-describedby="e-motivation"></textarea>
+      <span class="field__error" id="e-motivation" data-error></span>
+    </div>
+
+    <div class="field" data-field="links">
+      <label class="field__label" for="f-links">
+        {dict.join.fields.links}
+        <span class="field__optional">{dict.join.optional}</span>
+      </label>
+      <input class="input" id="f-links" name="links" type="text" placeholder={dict.join.fields.linksPh} />
+      <span class="field__error" data-error></span>
+    </div>
+
+    <div class="field" data-field="person">
+      <label class="field__label" for="f-person">
+        {dict.join.fields.person}
+        <span class="field__optional">{dict.join.optional}</span>
+      </label>
+      <input
+        class="input"
+        id="f-person"
+        name="person"
+        type="text"
+        placeholder={dict.join.fields.personPh}
+        aria-describedby="e-person"
+      />
+      <span class="field__error" id="e-person" data-error></span>
+    </div>
+
+    <!-- honeypot: hidden from humans, bots fill it in -->
+    <div class="honeypot" aria-hidden="true">
+      <label for="f-company">Company</label>
+      <input id="f-company" name="company" type="text" tabindex="-1" autocomplete="off" />
+    </div>
+  </div>
+
+  <div class="row">
+    <button class="btn btn--primary btn--lg" type="submit" data-submit>
+      <Icon name="send" size={17} />
+      <span data-submit-label>{dict.join.submit}</span>
+    </button>
+    <button class="btn btn--ghost" type="button" data-copy hidden>
+      <span data-copy-label>{dict.join.copy}</span>
+    </button>
+    {
+      invite && (
+        <a class="btn btn--solid" href={invite} target="_blank" rel="noopener noreferrer" data-open-discord hidden>
+          {dict.join.openDiscord}
+        </a>
+      )
+    }
+  </div>
+
+  <div class="form-status" data-status role="status" aria-live="polite" hidden>
+    <div>
+      <strong data-status-title></strong>
+      <span data-status-text></span>
+    </div>
+  </div>
+
+  <p class="form-note">{dict.join.note}</p>
+</form>
+
+<script define:vars={{ cfg }}>
+  (function () {
+    const form = document.getElementById('application-form');
+    if (!form) return;
+
+    const status = form.querySelector('[data-status]');
+    const statusTitle = form.querySelector('[data-status-title]');
+    const statusText = form.querySelector('[data-status-text]');
+    const submitBtn = form.querySelector('[data-submit]');
+    const submitLabel = form.querySelector('[data-submit-label]');
+    const copyBtn = form.querySelector('[data-copy]');
+    const copyLabel = form.querySelector('[data-copy-label]');
+    const discordBtn = form.querySelector('[data-open-discord]');
+
+    const select = form.querySelector('#f-vacancy');
+    const wanted = new URLSearchParams(location.search).get('vacancy');
+    if (wanted && select) {
+      const match = Array.from(select.options).find((o) => o.value === wanted.toLowerCase());
+      if (match) select.value = match.value;
+    }
+
+    function fieldOf(name) {
+      return form.querySelector('[data-field="' + name + '"]');
+    }
+
+    function setError(name, message) {
+      const field = fieldOf(name);
+      if (!field) return;
+      const error = field.querySelector('[data-error]');
+      const input = field.querySelector('.input, .textarea, .select');
+      if (message) {
+        field.classList.add('has-error');
+        if (error) error.textContent = message;
+        if (input) input.setAttribute('aria-invalid', 'true');
+      } else {
+        field.classList.remove('has-error');
+        if (error) error.textContent = '';
+        if (input) input.removeAttribute('aria-invalid');
+      }
+    }
+
+    function value(name) {
+      const el = form.querySelector('#f-' + name);
+      return el ? String(el.value || '').trim() : '';
+    }
+
+    function validate() {
+      const problems = [];
+      const check = (name, ok, message) => {
+        setError(name, ok ? '' : message);
+        if (!ok) problems.push(name);
+      };
+
+      const discord = value('discord');
+      const vacancy = value('vacancy');
+      const age = value('age');
+      const tz = value('tz');
+      const experience = value('experience');
+      const motivation = value('motivation');
+      const person = value('person');
+
+      check('discord', discord.length >= 2, cfg.errors.discord);
+      check('vacancy', vacancy.length > 0, cfg.errors.vacancy);
+      check('age', /^\d{1,3}$/.test(age) && Number(age) >= 10 && Number(age) <= 99, cfg.errors.age);
+      check('tz', tz.length >= 2, cfg.errors.tz);
+      check('experience', experience.length >= 10, cfg.errors.experience);
+      check('motivation', motivation.length >= 10, cfg.errors.motivation);
+      const emailOk =
+        person.length === 0 || !person.includes('@') || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(person);
+      check('person', emailOk, cfg.errors.email);
+
+      return problems;
+    }
+
+    function showStatus(kind, title, text) {
+      if (!status) return;
+      status.hidden = false;
+      status.classList.add('is-visible');
+      status.classList.toggle('form-status--ok', kind === 'ok');
+      status.classList.toggle('form-status--error', kind === 'error');
+      if (statusTitle) statusTitle.textContent = title;
+      if (statusText) statusText.textContent = text;
+    }
+
+    function truncate(text, max) {
+      return text.length > max ? text.slice(0, max - 1) + '…' : text;
+    }
+
+    function collect() {
+      const selectEl = form.querySelector('#f-vacancy');
+      const option = selectEl && selectEl.selectedOptions[0];
+      const label = option ? option.textContent.trim() : '';
+      const code = option ? option.value.toUpperCase() : '';
+      return {
+        code: code,
+        label: label,
+        discord: value('discord'),
+        age: value('age'),
+        tz: value('tz'),
+        experience: value('experience'),
+        motivation: value('motivation'),
+        links: value('links'),
+        person: value('person'),
+      };
+    }
+
+    function buildEmbed(data) {
+      const fields = [
+        { name: 'Discord', value: truncate(data.discord, 256), inline: true },
+        { name: 'Возраст', value: truncate(data.age, 64), inline: true },
+        { name: 'Часовой пояс', value: truncate(data.tz, 128), inline: true },
+        { name: 'Опыт и налёт', value: truncate(data.experience, 1000) },
+        { name: 'Мотивация', value: truncate(data.motivation, 1000) },
+      ];
+      if (data.links) fields.push({ name: 'Ссылки', value: truncate(data.links, 500) });
+      if (data.person) fields.push({ name: 'Имя / email', value: truncate(data.person, 300) });
+
+      const payload = {
+        username: 'SkyNational · Applications',
+        embeds: [
+          {
+            title: 'Новая заявка — ' + data.label,
+            color: 0x1a53d8,
+            fields: fields,
+            timestamp: new Date().toISOString(),
+          },
+        ],
+      };
+      if (cfg.mentionRole) payload.content = '<@&' + cfg.mentionRole + '>';
+      return payload;
+    }
+
+    function buildPlainText(data) {
+      const lines = [
+        'SkyNational Community — заявка',
+        'Вакансия: ' + data.label,
+        'Discord: ' + data.discord,
+        'Возраст: ' + data.age,
+        'Часовой пояс: ' + data.tz,
+        '',
+        'Опыт и налёт:',
+        data.experience,
+        '',
+        'Мотивация:',
+        data.motivation,
+      ];
+      if (data.links) lines.push('', 'Ссылки: ' + data.links);
+      if (data.person) lines.push('Имя / email: ' + data.person);
+      return lines.join('\n');
+    }
+
+    copyBtn?.addEventListener('click', async () => {
+      const text = buildPlainText(collect());
+      try {
+        await navigator.clipboard.writeText(text);
+        copyLabel.textContent = cfg.labels.copied;
+        setTimeout(() => (copyLabel.textContent = cfg.labels.copy), 2500);
+      } catch (error) {
+        window.prompt(cfg.labels.copy, text);
+      }
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const honeypot = form.querySelector('#f-company');
+      if (honeypot && honeypot.value) {
+        showStatus('ok', cfg.messages.success.title, cfg.messages.success.text);
+        form.reset();
+        return;
+      }
+
+      const problems = validate();
+      if (problems.length) {
+        const first = fieldOf(problems[0]);
+        const input = first && first.querySelector('.input, .textarea, .select');
+        if (input) input.focus();
+        return;
+      }
+
+      const data = collect();
+
+      if (!cfg.webhook) {
+        showStatus('error', cfg.messages.offline.title, cfg.messages.offline.text);
+        if (copyBtn) copyBtn.hidden = false;
+        if (discordBtn) discordBtn.hidden = false;
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitLabel.textContent = cfg.labels.sending;
+
+      try {
+        const response = await fetch(cfg.webhook, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(buildEmbed(data)),
+        });
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+
+        showStatus('ok', cfg.messages.success.title, cfg.messages.success.text);
+        form.reset();
+        if (copyBtn) copyBtn.hidden = true;
+        if (discordBtn) discordBtn.hidden = true;
+      } catch (error) {
+        showStatus('error', cfg.messages.failure.title, cfg.messages.failure.text);
+        if (copyBtn) copyBtn.hidden = false;
+        if (discordBtn) discordBtn.hidden = false;
+      } finally {
+        submitBtn.disabled = false;
+        submitLabel.textContent = cfg.labels.submit;
+        window.setTimeout(() => {
+          if (submitBtn) submitBtn.disabled = false;
+        }, 4000);
+      }
+    });
+  })();
+</script>

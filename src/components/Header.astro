@@ -1,0 +1,127 @@
+---
+import Icon from './Icon.astro';
+import { SITE } from '../config';
+import { asset, pathFor, type Lang } from '../utils/links';
+import { dicts } from '../i18n';
+
+interface Props {
+  lang: Lang;
+  pagePath: string;
+}
+
+const { lang, pagePath } = Astro.props;
+const dict = dicts[lang];
+
+const normalize = (p: string) => (p === '/' ? '/' : p.replace(/\/$/, ''));
+const current = normalize(pagePath);
+
+const items = [
+  { href: '/', label: dict.nav.home },
+  { href: '/about', label: dict.nav.about },
+  { href: '/vacancies', label: dict.nav.vacancies },
+  { href: '/news', label: dict.nav.news },
+  { href: '/events', label: dict.nav.events },
+  { href: '/wiki', label: dict.nav.wiki },
+  { href: '/contacts', label: dict.nav.contacts },
+];
+
+---
+
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="logo" href={pathFor(lang, '/')} aria-label={SITE.name}>
+      <img
+        class="logo__img logo__img--light"
+        src={asset('/assets/logo-skn.png')}
+        alt=""
+        width="44"
+        height="44"
+      />
+      <img
+        class="logo__img logo__img--dark"
+        src={asset('/assets/logo-skn-light.png')}
+        alt=""
+        width="44"
+        height="44"
+      />
+      <span class="logo__text">Sky<span>National</span></span>
+    </a>
+
+    <nav class="nav" id="site-nav" aria-label={dict.nav.menu}>
+      <ul class="nav-list">
+        {
+          items.map((item) => (
+            <li>
+              <a
+                href={pathFor(lang, item.href)}
+                aria-current={current === normalize(item.href) ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <button class="icon-btn search-btn" type="button" data-search-open aria-label={dict.a11y.search}>
+        <Icon name="search" size={17} />
+        <kbd>Ctrl K</kbd>
+      </button>
+
+      <div class="lang-switch" role="group" aria-label={dict.a11y.lang}>
+        <a
+          href={pathFor('ru', pagePath)}
+          data-lang-link="ru"
+          class={lang === 'ru' ? 'is-active' : ''}
+          hreflang="ru"
+        >
+          RU
+        </a>
+        <a
+          href={pathFor('en', pagePath)}
+          data-lang-link="en"
+          class={lang === 'en' ? 'is-active' : ''}
+          hreflang="en"
+        >
+          EN
+        </a>
+      </div>
+
+      <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label={dict.a11y.theme}>
+        <span class="i-moon"><Icon name="moon" size={16} /></span>
+        <span class="i-sun"><Icon name="sun" size={16} /></span>
+      </button>
+
+      <a class="btn btn--primary btn--sm header-cta" href={pathFor(lang, '/join')}>
+        {dict.nav.join}
+      </a>
+
+      <button
+        class="icon-btn nav-toggle"
+        id="nav-toggle"
+        type="button"
+        aria-label={dict.a11y.menu}
+        aria-controls="site-nav"
+        aria-expanded="false"
+      >
+        <Icon name="menu" size={18} />
+      </button>
+    </div>
+  </div>
+</header>
+
+<style>
+  .theme-toggle .i-sun {
+    display: none;
+  }
+
+  :global([data-theme='dark']) .theme-toggle .i-sun {
+    display: block;
+  }
+
+  :global([data-theme='dark']) .theme-toggle .i-moon {
+    display: none;
+  }
+</style>

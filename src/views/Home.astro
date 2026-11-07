@@ -1,0 +1,216 @@
+---
+import { getCollection } from 'astro:content';
+import { SITE } from '../config';
+import { dicts } from '../i18n';
+import { localizeAll } from '../utils/content';
+import { asset, pathFor, type Lang } from '../utils/links';
+import { VACANCIES } from '../data/vacancies';
+import NewsCard from '../components/NewsCard.astro';
+import EventCard from '../components/EventCard.astro';
+import VacancyCard from '../components/VacancyCard.astro';
+import DiscordOnline from '../components/DiscordOnline.astro';
+import CTABand from '../components/CTABand.astro';
+import Icon from '../components/Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const dict = dicts[lang];
+
+const news = localizeAll(await getCollection('news'), lang)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 3);
+
+const events = localizeAll(await getCollection('events'), lang).sort(
+  (a, b) => a.data.date.getTime() - b.data.date.getTime(),
+);
+const now = Date.now();
+const nextEvent = events.find((e) => e.data.date.getTime() > now - 4 * 3600 * 1000);
+
+const openVacancies = VACANCIES.filter((v) => v.open);
+const teaserVacancies = openVacancies.slice(0, 3);
+
+const stats = [
+  { label: dict.home.stats.networks, value: SITE.networks.join(' · ') },
+  { label: dict.home.stats.roles, value: String(openVacancies.length) },
+  { label: dict.home.stats.audience, value: dict.home.stats.audienceValue },
+  { label: dict.home.stats.reach, value: dict.home.stats.reachValue },
+];
+---
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero__media">
+    <img
+      src={asset('/assets/night-flight.jpg')}
+      alt=""
+      width="1697"
+      height="927"
+      fetchpriority="high"
+      decoding="async"
+    />
+  </div>
+
+  <div class="orb orb--blue" aria-hidden="true"></div>
+  <div class="orb orb--purple" aria-hidden="true"></div>
+
+  <div class="container">
+    <div class="hero__inner">
+      <span class="hero__badge">{dict.home.eyebrow}</span>
+      <h1>Sky<em>National</em> Community</h1>
+      <p class="hero__sub">{dict.home.subtitle}</p>
+      <div class="hero__actions">
+        <a class="btn btn--on-dark btn--lg" href={pathFor(lang, '/join')}>
+          <Icon name="plane" size={18} />
+          {dict.home.ctaPrimary}
+        </a>
+        <a class="btn btn--outline-light btn--lg" href={pathFor(lang, '/news')}>
+          {dict.home.ctaSecondary}
+        </a>
+      </div>
+
+      <dl class="hero__stats">
+        {
+          stats.map((stat) => (
+            <div>
+              <dt>{stat.label}</dt>
+              <dd>{stat.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section">
+  <div class="container split">
+    <div class="stack" data-reveal>
+      <span class="eyebrow">{dict.home.aboutLabel}</span>
+      <h2 class="section-title">{dict.home.aboutTitle}</h2>
+      <p class="lead">{SITE.about[lang]}</p>
+      <p>
+        <a class="link-arrow" href={pathFor(lang, '/about')}>{dict.home.aboutLink}</a>
+      </p>
+    </div>
+
+    <div class="split__media" data-reveal style="--reveal-delay: 120ms;">
+      <img
+        src={asset('/assets/gallery-a350-gate.jpg')}
+        alt={dict.about.galleryTitle}
+        loading="lazy"
+        decoding="async"
+        width="1600"
+        height="900"
+      />
+      <span class="split__badge">SKN · {SITE.networks.join(' · ')}</span>
+    </div>
+  </div>
+</section>
+
+<!-- LATEST NEWS -->
+<section class="section section--alt">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">{dict.home.newsLabel}</span>
+        <h2 class="section-title">{dict.home.newsTitle}</h2>
+      </div>
+      <a class="link-arrow" href={pathFor(lang, '/news')}>{dict.common.allNews}</a>
+    </div>
+
+    {
+      news.length > 0 ? (
+        <div class="grid grid--3">
+          {news.map((entry) => (
+            <NewsCard lang={lang} entry={entry} />
+          ))}
+        </div>
+      ) : (
+        <p class="empty-state">{dict.common.empty}</p>
+      )
+    }
+  </div>
+</section>
+
+<!-- NEXT EVENT -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">{dict.home.eventLabel}</span>
+        <h2 class="section-title">{dict.home.eventTitle}</h2>
+      </div>
+      <a class="link-arrow" href={pathFor(lang, '/events')}>{dict.common.allEvents}</a>
+    </div>
+
+    {
+      nextEvent ? (
+        <div class="split">
+          <EventCard lang={lang} entry={nextEvent} />
+          <aside class="feature" data-reveal>
+            <span class="eyebrow">{dict.home.startsIn}</span>
+            <div class="countdown" data-countdown={nextEvent.data.date.toISOString()}>
+              <div class="countdown__unit">
+                <span class="countdown__value" data-unit="days">
+                  00
+                </span>
+                <span class="countdown__label">{dict.home.units.days}</span>
+              </div>
+              <div class="countdown__unit">
+                <span class="countdown__value" data-unit="hours">
+                  00
+                </span>
+                <span class="countdown__label">{dict.home.units.hours}</span>
+              </div>
+              <div class="countdown__unit">
+                <span class="countdown__value" data-unit="minutes">
+                  00
+                </span>
+                <span class="countdown__label">{dict.home.units.minutes}</span>
+              </div>
+              <div class="countdown__unit">
+                <span class="countdown__value" data-unit="seconds">
+                  00
+                </span>
+                <span class="countdown__label">{dict.home.units.seconds}</span>
+              </div>
+            </div>
+            <a class="btn btn--primary" href={pathFor(lang, '/events')}>
+              {dict.common.allEvents}
+            </a>
+          </aside>
+        </div>
+      ) : (
+        <p class="empty-state">{dict.home.eventNone}</p>
+      )
+    }
+  </div>
+</section>
+
+<!-- VACANCIES -->
+<section class="section section--alt">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">{dict.home.vacanciesLabel}</span>
+        <h2 class="section-title">{dict.home.vacanciesTitle}</h2>
+        <p class="section-sub">{dict.home.vacanciesText}</p>
+      </div>
+      <a class="link-arrow" href={pathFor(lang, '/vacancies')}>
+        {dict.common.viewAll} · {openVacancies.length} {dict.home.openRoles}
+      </a>
+    </div>
+
+    <div class="grid grid--3">
+      {teaserVacancies.map((vacancy) => <VacancyCard lang={lang} vacancy={vacancy} compact />)}
+    </div>
+  </div>
+</section>
+
+<DiscordOnline lang={lang} />
+
+<CTABand lang={lang} title={dict.home.ctaTitle} text={dict.home.ctaText} />

@@ -1,0 +1,134 @@
+---
+import { getCollection } from 'astro:content';
+import { dicts } from '../i18n';
+import { localizeAll } from '../utils/content';
+import type { Lang } from '../utils/links';
+import PageHead from '../components/PageHead.astro';
+import WikiCard from '../components/WikiCard.astro';
+import CTABand from '../components/CTABand.astro';
+import Icon from '../components/Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const dict = dicts[lang];
+
+const articles = localizeAll(await getCollection('wiki'), lang).sort((a, b) => {
+  const byCategory = a.data.category.localeCompare(b.data.category);
+  return byCategory !== 0 ? byCategory : a.data.order - b.data.order;
+});
+
+const categories = Object.keys(dict.wiki.categoryNames) as (keyof typeof dict.wiki.categoryNames)[];
+const counts = new Map(categories.map((c) => [c, articles.filter((a) => a.data.category === c).length]));
+---
+
+<PageHead eyebrow={dict.nav.wiki} title={dict.wiki.title} sub={dict.wiki.subtitle} code="WIKI">
+  <div class="row">
+    <label class="visually-hidden" for="wiki-search">{dict.wiki.searchLabel}</label>
+    <input
+      class="input"
+      id="wiki-search"
+      type="search"
+      placeholder={dict.wiki.searchPlaceholder}
+      data-wiki-search
+      style="max-width: 24rem;"
+      autocomplete="off"
+    />
+  </div>
+</PageHead>
+
+<section class="section section--tight">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">{dict.nav.wiki}</span>
+        <h2 class="section-title">{dict.wiki.categories}</h2>
+      </div>
+    </div>
+
+    <div class="grid grid--3">
+      <button class="feature filter-btn is-active" type="button" data-wiki-cat="all" style="text-align: left; cursor: pointer;">
+        <span class="feature__icon"><Icon name="book" size={18} /></span>
+        <h3>{dict.tags.all}</h3>
+        <p>{dict.wiki.title}</p>
+        <span class="chip chip--accent">{articles.length} {dict.wiki.articles}</span>
+      </button>
+
+      {
+        categories.map((category) => (
+          <button
+            class="feature filter-btn"
+            type="button"
+            data-wiki-cat={category}
+            style="text-align: left; cursor: pointer;"
+          >
+            <span class="feature__icon">
+              <Icon name="book" size={18} />
+            </span>
+            <h3>{dict.wiki.categoryNames[category]}</h3>
+            <p>{dict.wiki.categoryDesc[category]}</p>
+            <span class="chip">
+              {counts.get(category) ?? 0} {dict.wiki.articles}
+            </span>
+          </button>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">{dict.nav.wiki}</span>
+        <h2 class="section-title">{dict.wiki.recent}</h2>
+      </div>
+      <span class="chip">{articles.length} {dict.wiki.articles}</span>
+    </div>
+
+    <div class="grid grid--3">
+      {articles.map((entry) => <WikiCard lang={lang} entry={entry} />)}
+    </div>
+
+    <p class="empty-state" data-wiki-empty hidden>{dict.wiki.emptySearch}</p>
+  </div>
+</section>
+
+<CTABand lang={lang} title={dict.home.ctaTitle} text={dict.home.ctaText} />
+
+<script>
+  const search = document.querySelector<HTMLInputElement>('[data-wiki-search]');
+  const catButtons = document.querySelectorAll<HTMLButtonElement>('[data-wiki-cat]');
+  const cards = document.querySelectorAll<HTMLElement>('[data-wiki-card]');
+  const empty = document.querySelector<HTMLElement>('[data-wiki-empty]');
+
+  let activeCat = 'all';
+
+  function apply() {
+    const query = (search?.value ?? '').trim().toLowerCase();
+    let visible = 0;
+
+    cards.forEach((card) => {
+      const matchesCat = activeCat === 'all' || card.dataset.cat === activeCat;
+      const matchesText = !query || (card.dataset.text ?? '').includes(query);
+      const show = matchesCat && matchesText;
+      card.hidden = !show;
+      if (show) visible += 1;
+    });
+
+    if (empty) empty.hidden = visible > 0;
+  }
+
+  search?.addEventListener('input', apply);
+
+  catButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      activeCat = button.dataset.wikiCat ?? 'all';
+      catButtons.forEach((b) => b.classList.toggle('is-active', b === button));
+      apply();
+    });
+  });
+</script>

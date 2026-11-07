@@ -1,0 +1,85 @@
+---
+import { getCollection, render } from 'astro:content';
+import { dicts } from '../i18n';
+import { localize, localizeAll, slugOf } from '../utils/content';
+import { pathFor, type Lang } from '../utils/links';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import WikiCard from '../components/WikiCard.astro';
+
+interface Props {
+  lang: Lang;
+  slug: string;
+}
+
+const { lang, slug } = Astro.props;
+const dict = dicts[lang];
+
+const entries = await getCollection('wiki');
+const entry = localize(entries, slug, lang);
+if (!entry) throw new Error(`Wiki entry not found: ${slug}`);
+
+const { Content } = await render(entry);
+const { title, category, excerpt } = entry.data;
+const categoryHref = pathFor(lang, '/wiki');
+
+const siblings = localizeAll(entries, lang)
+  .filter((e) => e.data.category === category && slugOf(e.id) !== slug)
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 3);
+---
+
+<section class="page-head" data-code="WIKI">
+  <div class="container page-head__inner">
+    <Breadcrumbs
+      items={[
+        { label: dict.nav.home, href: pathFor(lang, '/') },
+        { label: dict.nav.wiki, href: categoryHref },
+        { label: dict.wiki.categoryNames[category] },
+        { label: title },
+      ]}
+    />
+    <div class="article-head">
+      <div class="row">
+        <span class="chip chip--accent">{dict.wiki.categoryNames[category]}</span>
+        <span class="chip">{dict.wiki.category}: {dict.wiki.categoryNames[category]}</span>
+      </div>
+      <h1>{title}</h1>
+      <p class="page-head__sub">{excerpt}</p>
+    </div>
+  </div>
+</section>
+
+<article class="section">
+  <div class="container">
+    <div class="prose">
+      <Content />
+    </div>
+
+    <p style="margin-top: 2.5rem;">
+      <a class="link-arrow" href={categoryHref}>{dict.wiki.backToCategory}</a>
+    </p>
+  </div>
+</article>
+
+{
+  siblings.length > 0 && (
+    <section class="section section--alt">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">{dict.wiki.category}</span>
+            <h2 class="section-title">{dict.wiki.categoryNames[category]}</h2>
+          </div>
+          <a class="link-arrow" href={categoryHref}>
+            {dict.common.allArticles}
+          </a>
+        </div>
+        <div class="grid grid--3">
+          {siblings.map((item) => (
+            <WikiCard lang={lang} entry={item} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}

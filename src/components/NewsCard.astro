@@ -1,0 +1,47 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { asset, pathFor, type Lang } from '../utils/links';
+import { slugOf } from '../utils/content';
+import { dicts, formatDate } from '../i18n';
+
+interface Props {
+  lang: Lang;
+  entry: CollectionEntry<'news'>;
+}
+
+const { lang, entry } = Astro.props;
+const dict = dicts[lang];
+const { title, date, tags, cover, excerpt } = entry.data;
+const href = pathFor(lang, `/news/${slugOf(entry.id)}`);
+---
+
+<article class="card" data-reveal data-news-card data-tags={tags.join(' ')}>
+  {
+    cover && (
+      <img class="card__cover" src={asset(cover)} alt="" loading="lazy" decoding="async" width="800" height="450" />
+    )
+  }
+  <div class="card__body">
+    <div class="meta">
+      <time datetime={date.toISOString()}>{formatDate(date, lang)}</time>
+      {
+        tags.length > 0 && (
+          <>
+            <span aria-hidden="true">·</span>
+            <span>{dict.tags[tags[0]]}</span>
+          </>
+        )
+      }
+    </div>
+    <h3 class="card__title">
+      <a href={href}>{title}</a>
+    </h3>
+    <p class="card__excerpt">{excerpt}</p>
+    <div class="card__footer">
+      <div class="tags">
+        {tags.map((tag) => <span class="tag">{dict.tags[tag]}</span>)}
+      </div>
+      <span class="link-arrow" aria-hidden="true">{dict.common.readMore}</span>
+    </div>
+  </div>
+</article>

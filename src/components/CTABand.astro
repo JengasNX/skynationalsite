@@ -1,0 +1,32 @@
+---
+import { pathFor, type Lang } from '../utils/links';
+import { dicts } from '../i18n';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  text: string;
+  label?: string;
+  href?: string;
+}
+
+const { lang, title, text, label, href = '/join' } = Astro.props;
+const dict = dicts[lang];
+---
+
+<section class="section">
+  <div class="container">
+    <div class="cta-band" data-reveal>
+      <h2>{title}</h2>
+      <p>{text}</p>
+      <div class="row">
+        <a class="btn btn--on-dark btn--lg" href={pathFor(lang, href)}>
+          {label ?? dict.home.ctaBtn}
+        </a>
+        <a class="btn btn--outline-light" href={pathFor(lang, '/about')}>
+          {dict.common.learnMore}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

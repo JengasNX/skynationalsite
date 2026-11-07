@@ -1,0 +1,54 @@
+---
+import type { Lang } from '../utils/links';
+import { pathFor } from '../utils/links';
+import { dicts } from '../i18n';
+import type { Vacancy } from '../data/vacancies';
+
+interface Props {
+  lang: Lang;
+  vacancy: Vacancy;
+  compact?: boolean;
+}
+
+const { lang, vacancy, compact = false } = Astro.props;
+const dict = dicts[lang];
+const href = pathFor(lang, `/join?vacancy=${vacancy.code.toLowerCase()}`);
+---
+
+<article class:list={['card', 'vacancy-card']} data-reveal>
+  <div class="card__body">
+    <div class="row" style="justify-content: space-between;">
+      <span class="vacancy-card__code">{vacancy.code}</span>
+      <span class:list={['state-dot', { 'state-dot--closed': !vacancy.open }]}>
+        {vacancy.open ? dict.vacancies.openLabel : dict.vacancies.closedLabel}
+      </span>
+    </div>
+    <h3 class="vacancy-card__title">{vacancy.title[lang]}</h3>
+    {lang === 'ru' && <span class="vacancy-card__role">{vacancy.title.en}</span>}
+    <p class="card__excerpt">{vacancy.summary[lang]}</p>
+    {
+      !compact && (
+        <div class="stack" style="gap: 0.6rem; margin-top: 0.4rem;">
+          <div>
+            <div class="meta" style="margin-bottom: 0.35rem;">{dict.vacancies.responsibilities}</div>
+            <ul class="event-facts" style="display: grid; gap: 0.3rem;">
+              {vacancy.responsibilities[lang].slice(0, 3).map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )
+    }
+    <div class="card__footer">
+      <span class="muted" style="font-size: 0.82rem;">{vacancy.open ? dict.vacancies.applyHint : '—'}</span>
+      {
+        vacancy.open && (
+          <a class="btn btn--primary btn--sm" href={href}>
+            {dict.vacancies.apply}
+          </a>
+        )
+      }
+    </div>
+  </div>
+</article>

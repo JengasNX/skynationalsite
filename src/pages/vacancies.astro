@@ -1,0 +1,11 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import VacanciesView from '../views/Vacancies.astro';
+import { dicts } from '../i18n';
+
+const lang = 'ru' as const;
+const dict = dicts[lang];
+---
+<BaseLayout lang={lang} title={dict.vacancies.title} pagePath="/vacancies">
+  <VacanciesView lang={lang} />
+</BaseLayout>

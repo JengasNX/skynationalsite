@@ -1,0 +1,67 @@
+---
+import type { Lang } from '../utils/links';
+import { dicts } from '../i18n';
+import { DISCORD } from '../config';
+import Icon from './Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const dict = dicts[lang];
+const hasGuild = DISCORD.guildId.trim().length > 0;
+const invite = DISCORD.invite.trim();
+---
+
+<section class="section section--tight">
+  <div class="container">
+    <div class="discord-card" data-reveal>
+      <div class="stack" style="gap: 0.4rem;">
+        <span class="eyebrow">{dict.discord.onlineTitle}</span>
+        <p class="muted" style="margin: 0;">{dict.discord.hint}</p>
+        {
+          hasGuild && (
+            <div class="discord-card__count" data-discord-count hidden>
+              <strong data-online>—</strong>
+              <span class="muted" data-online-label>
+                {dict.discord.onlineLabel}
+              </span>
+            </div>
+          )
+        }
+      </div>
+
+      <div class="row">
+        {
+          invite && (
+            <a class="btn btn--primary btn--lg" href={invite} target="_blank" rel="noopener noreferrer">
+              <Icon name="send" size={17} />
+              {dict.discord.cta}
+            </a>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ guildId: DISCORD.guildId.trim(), hasInvite: invite.length > 0 }}>
+  if (hasInvite && guildId) {
+    const box = document.querySelector('[data-discord-count]');
+    if (box) {
+      fetch(`https://discord.com/api/guilds/${guildId}/widget.json`)
+        .then((r) => (r.ok ? r.json() : Promise.reject(new Error('widget unavailable'))))
+        .then((data) => {
+          const online = data.presence_count;
+          if (typeof online !== 'number') return;
+          const value = box.querySelector('[data-online]');
+          if (value) value.textContent = String(online);
+          box.hidden = false;
+        })
+        .catch(() => {
+          /* no widget — keep the counter hidden */
+        });
+    }
+  }
+</script>

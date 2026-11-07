@@ -1,0 +1,70 @@
+---
+import { getCollection } from 'astro:content';
+import { dicts } from '../i18n';
+import { localizeAll } from '../utils/content';
+import type { Lang } from '../utils/links';
+import PageHead from '../components/PageHead.astro';
+import NewsCard from '../components/NewsCard.astro';
+import CTABand from '../components/CTABand.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const dict = dicts[lang];
+
+const news = localizeAll(await getCollection('news'), lang).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+
+const tags = ['updates', 'events', 'recruitment', 'community'] as const;
+---
+
+<PageHead eyebrow={dict.nav.news} title={dict.news.title} sub={dict.news.subtitle} code="NEWS" />
+
+<section class="section">
+  <div class="container">
+    <div class="list-filters" role="group" aria-label={dict.news.filterLabel}>
+      <button class="filter-btn is-active" type="button" data-filter="all">{dict.tags.all}</button>
+      {
+        tags.map((tag) => (
+          <button class="filter-btn" type="button" data-filter={tag}>
+            {dict.tags[tag]}
+          </button>
+        ))
+      }
+    </div>
+
+    <div class="grid grid--3">
+      {news.map((entry) => <NewsCard lang={lang} entry={entry} />)}
+    </div>
+
+    <p class="empty-state" data-filter-empty hidden>{dict.news.empty}</p>
+  </div>
+</section>
+
+<CTABand lang={lang} title={dict.home.ctaTitle} text={dict.home.ctaText} />
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  const cards = document.querySelectorAll<HTMLElement>('[data-news-card]');
+  const empty = document.querySelector<HTMLElement>('[data-filter-empty]');
+
+  buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const tag = button.dataset.filter ?? 'all';
+      buttons.forEach((b) => b.classList.toggle('is-active', b === button));
+
+      let visible = 0;
+      cards.forEach((card) => {
+        const tags = (card.dataset.tags ?? '').split(/\s+/).filter(Boolean);
+        const show = tag === 'all' || tags.includes(tag);
+        card.hidden = !show;
+        if (show) visible += 1;
+      });
+
+      if (empty) empty.hidden = visible > 0;
+    });
+  });
+</script>

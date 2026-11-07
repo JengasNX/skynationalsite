@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import WikiView from '../../views/Wiki.astro';
+import { dicts } from '../../i18n';
+
+const lang = 'ru' as const;
+const dict = dicts[lang];
+---
+
+<BaseLayout lang={lang} title={dict.wiki.title} description={dict.wiki.subtitle} pagePath="/wiki">
+  <WikiView lang={lang} />
+</BaseLayout>

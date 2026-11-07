@@ -1,0 +1,11 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AboutView from '../../views/About.astro';
+import { dicts } from '../../i18n';
+
+const lang = 'en' as const;
+const dict = dicts[lang];
+---
+<BaseLayout lang={lang} title={dict.about.title} pagePath="/about">
+  <AboutView lang={lang} />
+</BaseLayout>

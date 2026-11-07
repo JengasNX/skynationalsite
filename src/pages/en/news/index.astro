@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import NewsView from '../../../views/News.astro';
+import { dicts } from '../../../i18n';
+
+const lang = 'en' as const;
+const dict = dicts[lang];
+---
+
+<BaseLayout lang={lang} title={dict.news.title} description={dict.news.subtitle} pagePath="/news">
+  <NewsView lang={lang} />
+</BaseLayout>

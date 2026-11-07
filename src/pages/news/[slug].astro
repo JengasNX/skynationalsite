@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import NewsPostView from '../../views/NewsPost.astro';
+import { getCollection } from 'astro:content';
+import { slugOf, localize } from '../../utils/content';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('news');
+  const slugs = [...new Set(entries.map((entry) => slugOf(entry.id)))].sort();
+  return slugs.map((slug) => ({ params: { slug } }));
+}
+
+const lang = 'ru' as const;
+const slug = Astro.params.slug ?? '';
+const entry = localize(await getCollection('news'), slug, lang);
+if (!entry) throw new Error(`Missing news entry: ${slug}`);
+---
+
+<BaseLayout
+  lang={lang}
+  title={entry.data.title}
+  description={entry.data.excerpt}
+  pagePath={`/news/${slug}`}
+  image={entry.data.cover ?? '/assets/og-image.jpg'}
+>
+  <NewsPostView lang={lang} slug={slug} />
+</BaseLayout>
