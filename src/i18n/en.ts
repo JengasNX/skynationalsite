@@ -20,6 +20,9 @@ export const en: Dict = {
     menu: 'Open menu',
     skip: 'Skip to content',
   },
+  loader: {
+    text: 'Please wait',
+  },
   common: {
     readMore: 'Read',
     allNews: 'All news',
@@ -114,6 +117,8 @@ export const en: Dict = {
     galleryLabel: 'Gallery',
     galleryTitle: 'Frames from our flights',
     galleryText: 'Photos and screenshots shared by community members.',
+    teamLabel: 'About us',
+    teamTitle: 'International team of pilots',
   },
   vacancies: {
     title: 'Vacancies & team',

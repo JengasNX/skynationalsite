@@ -18,6 +18,9 @@ export const ru = {
     menu: 'Открыть меню',
     skip: 'Перейти к содержимому',
   },
+  loader: {
+    text: 'Пожалуйста, подождите',
+  },
   common: {
     readMore: 'Читать',
     allNews: 'Все новости',
@@ -112,6 +115,8 @@ export const ru = {
     galleryLabel: 'Галерея',
     galleryTitle: 'Кадры наших полётов',
     galleryText: 'Фото и скриншоты участников сообщества.',
+    teamLabel: 'О нас',
+    teamTitle: 'Международная команда пилотов',
   },
   vacancies: {
     title: 'Вакансии и команда',

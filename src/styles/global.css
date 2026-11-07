@@ -136,6 +136,12 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/* Page loader: lock scroll while the intro overlay is visible. */
+html.is-loading,
+html.is-loading body {
+  overflow: hidden;
+}
+
 h1,
 h2,
 h3,
