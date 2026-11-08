@@ -51,12 +51,11 @@ export type Social = {
 
 /**
  * Аналитика, нагруженная только после согласия в cookie-баннере.
- * Пока пусто: впишите, например, Google Analytics Measurement ID вида 'G-XXXXXXXXXX'
- * (или домен для privacy-friendly Plausible), и скрипт подключится сам.
+ * Google Analytics 4 (обезличенный IP), ID веб-потока SkyNational.
  */
 export const ANALYTICS = {
-  provider: '' as '' | 'ga4' | 'plausible',
-  id: '',
+  provider: 'ga4' as 'ga4',
+  id: 'G-2RJZV0FYWM',
 };
 
 export const SOCIALS: Social[] = [

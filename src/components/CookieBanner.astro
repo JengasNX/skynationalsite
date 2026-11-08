@@ -51,6 +51,9 @@ const dict = dicts[lang];
         window.setTimeout(function () {
           banner.hidden = true;
         }, 250);
+        if (choice === 'accept') {
+          window.dispatchEvent(new CustomEvent('skn:analytics-consent'));
+        }
       });
     });
   })();
