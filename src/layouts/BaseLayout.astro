@@ -75,12 +75,6 @@ const ogImage = `${SITE.url}${image.startsWith('/') ? image : `/${image}`}`;
         }
         document.documentElement.classList.add('js');
         document.documentElement.classList.add('is-loading');
-        try {
-          // Show the fancy intro loader only on the first page of the session.
-          if (sessionStorage.getItem('skn-loader-shown')) {
-            document.documentElement.classList.add('loader-skip');
-          }
-        } catch (e) {}
       })();
     </script>
 
@@ -152,28 +146,23 @@ const ogImage = `${SITE.url}${image.startsWith('/') ? image : `/${image}`}`;
       // Theme, language, mobile nav, reveal-on-scroll and hero parallax.
       const root = document.documentElement;
 
-      // Hide the page loader shortly after full load (min display ~650ms, max 2.5s).
+      // Hide the page loader shortly after full load. The intro loader plays
+      // on EVERY page load/navigation (owner's preference). Min display ~900ms,
+      // max 2.5s so a slow network never traps visitors on the overlay.
       {
         const loader = document.getElementById('page-loader');
-        if (root.classList.contains('loader-skip')) {
-          loader?.remove();
-          root.classList.remove('is-loading');
-        } else if (loader) {
-          root.classList.add('is-loading');
+        if (loader) {
           const start = Date.now();
           let hidden = false;
           const hide = () => {
             if (hidden) return;
             hidden = true;
-            try {
-              sessionStorage.setItem('skn-loader-shown', '1');
-            } catch {}
             loader.classList.add('page-loader--hidden');
             root.classList.remove('is-loading');
             window.setTimeout(() => loader.remove(), 600);
           };
           window.addEventListener('load', () => {
-            window.setTimeout(hide, Math.max(0, 650 - (Date.now() - start)));
+            window.setTimeout(hide, Math.max(0, 900 - (Date.now() - start)));
           });
           window.setTimeout(hide, 2500);
         }

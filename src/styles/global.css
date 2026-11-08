@@ -146,11 +146,6 @@ html.is-loading body {
   overflow: hidden;
 }
 
-/* Session-frequent navigations skip the intro loader. */
-html.loader-skip #page-loader {
-  display: none;
-}
-
 /* Smooth leaving state for language/theme-like navigations
    (fallback when View Transitions API is unavailable). */
 html.lang-leaving body {
