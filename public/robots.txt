@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://jengasadmin.github.io/skynationalsite/sitemap-index.xml
+Sitemap: https://jengasnx.github.io/skynationalsite/sitemap-index.xml
+

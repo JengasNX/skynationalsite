@@ -1,0 +1,57 @@
+---
+import { dicts, type Lang } from '../i18n';
+import { pathFor } from '../utils/links';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const dict = dicts[lang];
+---
+
+<div class="cookie-banner" id="cookie-banner" role="dialog" aria-live="polite" aria-label={dict.cookie.title} hidden>
+  <div class="cookie-banner__body">
+    <p class="cookie-banner__title">{dict.cookie.title}</p>
+    <p class="cookie-banner__text">
+      {dict.cookie.text}
+      <a href={pathFor(lang, '/privacy-policy')}>{dict.cookie.more}</a>
+    </p>
+  </div>
+  <div class="cookie-banner__actions">
+    <button class="btn btn--sm btn--ghost" type="button" data-cookie="reject">{dict.cookie.reject}</button>
+    <button class="btn btn--sm btn--primary" type="button" data-cookie="accept">{dict.cookie.accept}</button>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    var KEY = 'skn-cookie-consent';
+    var banner = document.getElementById('cookie-banner');
+    if (!banner) return;
+    var saved = null;
+    try {
+      saved = localStorage.getItem(KEY);
+    } catch (e) {}
+    // Состояние читается дальше в BaseLayout: аналитика грузится только при согласии.
+    document.documentElement.dataset.cookieConsent = saved || '';
+    if (!saved) {
+      banner.hidden = false;
+      window.requestAnimationFrame(function () {
+        banner.classList.add('is-visible');
+      });
+    }
+    Array.prototype.forEach.call(banner.querySelectorAll('[data-cookie]'), function (btn) {
+      btn.addEventListener('click', function () {
+        var choice = btn.getAttribute('data-cookie');
+        try {
+          localStorage.setItem(KEY, choice);
+        } catch (e) {}
+        banner.classList.remove('is-visible');
+        window.setTimeout(function () {
+          banner.hidden = true;
+        }, 250);
+      });
+    });
+  })();
+</script>

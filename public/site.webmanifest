@@ -1,7 +1,7 @@
 {
   "name": "SkyNational Community",
   "short_name": "SkyNational",
-  "description": "SkyNational — международное авиационное сообщество для пилотов VATSIM, энтузиастов авиации и всех, кто мечтает о небе.",
+  "description": "Сообщество виртуальных пилотов VATSIM: совместные полёты, обучение новичков и живое комьюнити.",
   "start_url": "/skynationalsite/",
   "scope": "/skynationalsite/",
   "display": "standalone",
@@ -11,7 +11,8 @@
     {
       "src": "/skynationalsite/assets/favicon.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     }
   ]
 }

@@ -14,12 +14,12 @@ export const SITE = {
     en: 'VATSIM pilots community',
   },
   description: {
-    ru: 'SkyNational — сообщество виртуальных пилотов VATSIM: совместные полёты, обучение новичков и живое комьюнити.',
-    en: 'SkyNational is a community for VATSIM pilots: group flights, pilot training and a lively community.',
+    ru: 'SkyNational: сообщество виртуальных пилотов VATSIM. Совместные полёты, обучение новичков и живое комьюнити.',
+    en: 'SkyNational: a community for VATSIM pilots. Group flights, pilot training and a lively community.',
   },
   about: {
-    ru: 'SkyNational — сообщество пилотов VATSIM. Мы летаем вместе, разбираем полёты и помогаем новичкам спокойно выйти в сеть: без гонки за звёздами, с понятными правилами и поддержкой на каждом шаге.',
-    en: 'SkyNational is a community for VATSIM pilots. We fly together, review our flights and help newcomers get online with confidence — clear rules and support at every step.',
+    ru: 'SkyNational, сообщество пилотов VATSIM. Мы летаем вместе, разбираем полёты и помогаем новичкам спокойно выйти в сеть: без гонки за звёздами, с понятными правилами и поддержкой на каждом шаге.',
+    en: 'SkyNational is a community for VATSIM pilots. We fly together, review our flights and help newcomers get online with confidence: clear rules and support at every step.',
   },
   networks: ['VATSIM'],
 } as const;
@@ -32,10 +32,10 @@ export const SITE = {
 export const EVENTS_ENABLED = false;
 
 export const DISCORD = {
-  /** TODO: ID сервера Discord — включает счётчик онлайна на сайте */
+  /** ID сервера Discord — включает счётчик онлайна на сайте */
   guildId: '',
-  /** TODO: ссылка-инвайт на сервер Discord */
-  invite: '',
+  /** Ссылка-инвайт на сервер Discord */
+  invite: 'https://discord.gg/9dddBQ35JC',
   /** TODO: URL вебхука, куда уходят заявки из формы «Присоединиться» */
   webhookUrl: '',
   /** TODO: ID роли, которую нужно упомянуть в заявке (необязательно) */
@@ -47,6 +47,16 @@ export type Social = {
   label: string;
   /** TODO: заполнить реальными ссылками */
   url: string;
+};
+
+/**
+ * Аналитика, нагруженная только после согласия в cookie-баннере.
+ * Пока пусто: впишите, например, Google Analytics Measurement ID вида 'G-XXXXXXXXXX'
+ * (или домен для privacy-friendly Plausible), и скрипт подключится сам.
+ */
+export const ANALYTICS = {
+  provider: '' as '' | 'ga4' | 'plausible',
+  id: '',
 };
 
 export const SOCIALS: Social[] = [

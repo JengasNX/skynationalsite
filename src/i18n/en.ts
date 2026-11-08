@@ -55,6 +55,7 @@ export const en: Dict = {
   home: {
     eyebrow: 'VATSIM · International community',
     title: 'SkyNational Community',
+    heroAlt: 'Night flight: city lights seen past the wing',
     subtitle:
       'A community for VATSIM pilots: group flights, plain-language explanations and people you actually enjoy flying with.',
     ctaPrimary: 'Join us',
@@ -83,11 +84,11 @@ export const en: Dict = {
     vacanciesLabel: 'Team',
     vacanciesTitle: 'We are looking for you',
     vacanciesText:
-      'The SkyNational team is growing — open roles in moderation, support and newcomer training.',
+      'The SkyNational team is growing. Open roles in moderation, support and newcomer training.',
     openRoles: 'open roles',
     ctaTitle: 'Ready for take-off?',
     ctaText:
-      'Fill in a short application — we reply to every request in Discord and help you get to your first group flight.',
+      'Fill in a short application: we reply to every request in Discord and help you get to your first group flight.',
     ctaBtn: 'Fill the application',
   },
   about: {
@@ -98,7 +99,7 @@ export const en: Dict = {
     missionLabel: 'Mission',
     missionTitle: 'Learn, fly, grow',
     missionText:
-      'What matters to us: a newcomer’s first online flight should not feel scary, and an experienced pilot should always have someone to fly an interesting route with. Everything else — the rules, the roles, the wiki pages — exists to serve that goal.',
+      'What matters to us: a newcomer’s first online flight should not feel scary, and an experienced pilot should always have someone to fly an interesting route with. Everything else (the rules, the roles, the wiki pages) exists to serve that goal.',
     networksLabel: 'Networks',
     networksTitle: 'VATSIM',
     networksText:
@@ -121,7 +122,7 @@ export const en: Dict = {
   },
   team: {
     title: 'Team',
-    subtitle: 'Leadership and staff of SkyNational — the people who make the community.',
+    subtitle: 'Leadership and staff of SkyNational: the people who make the community.',
   },
   vacancies: {
     title: 'Vacancies & team',
@@ -133,9 +134,9 @@ export const en: Dict = {
     responsibilities: 'Responsibilities',
     requirements: 'Requirements',
     teamTitle: 'Team',
-    teamEmpty: 'The team roster will appear here — the section is being prepared.',
+    teamEmpty: 'The team roster will appear here later.',
     allPositions: 'open positions',
-    note: 'Did not find your role? Write to us on Discord — we will figure it out together.',
+    note: 'Did not find your role? Write to us on Discord, we will figure it out together.',
   },
   news: {
     title: 'News',
@@ -188,7 +189,7 @@ export const en: Dict = {
   },
   join: {
     title: 'Join SkyNational',
-    subtitle: 'Fill in the application — it goes straight to our Discord and we will get back to you.',
+    subtitle: 'Fill in the application: it goes straight to our Discord and we will get back to you.',
     formLabel: 'Candidate application',
     optional: 'optional',
     required: 'required',
@@ -220,7 +221,7 @@ export const en: Dict = {
     },
     offline: {
       title: 'Sending is temporarily unavailable',
-      text: 'Copy the application and send it to us on Discord — we will read it for sure.',
+      text: 'Copy the application and send it to us on Discord, we will read it for sure.',
     },
     copy: 'Copy application',
     copied: 'Copied',
@@ -240,21 +241,21 @@ export const en: Dict = {
   },
   contacts: {
     title: 'Contact',
-    subtitle: 'We are always online — pick the platform you prefer.',
+    subtitle: 'We are always online. Pick the platform you prefer.',
     channelsTitle: 'Community platforms',
-    channelsText: 'News, announcements and live chat — on Discord and Telegram.',
+    channelsText: 'News, announcements and live chat on Discord and Telegram.',
     followTitle: 'Reach us',
     writeTitle: 'Write to us',
-    writeText: 'Questions about the community, partnerships or vacancies — through Discord or Telegram.',
+    writeText: 'Questions about the community, partnerships or vacancies? Find us on Discord or Telegram.',
     discordCta: 'Go to Discord',
     telegramCta: 'Write on Telegram',
     pending: 'Link coming soon',
-    note: 'For membership applications use the “Join us” form — it reaches us faster.',
+    note: 'For membership applications use the “Join us” form, it reaches us faster.',
   },
   search: {
     title: 'Search the site',
     placeholder: 'News, articles, sections…',
-    hint: 'Enter — open, Esc — close',
+    hint: 'Enter: open · Esc: close',
     noResults: 'Nothing found',
     results: 'Results',
     types: { page: 'Page', news: 'News', event: 'Event', wiki: 'Article' },
@@ -276,5 +277,40 @@ export const en: Dict = {
     membersLabel: 'members',
     cta: 'Join the server',
     hint: 'Join the conversation right now',
+  },
+  legal: {
+    privacyTitle: 'Privacy Policy',
+    termsTitle: 'Terms of Use',
+    updated: 'Updated: 8 November 2026',
+    privacy: [
+      'In short: the SkyNational Community website collects a minimum of data and never hands it to third parties for advertising.',
+      'What we collect. Applications submitted through the “Join us” form go to our internal Discord server and contain only what you enter yourself: your Discord username, age, region, experience and motivation. Only staff members can see this data.',
+      'Cookies and localStorage. The site stores only technical preferences in your browser: theme and language, a “loader already shown” flag and your cookie-banner answer. Analytics cookies are set only after you consent.',
+      'Third-party services. This site is not affiliated with VATSIM.net; clicks on external links (Discord, Telegram, VATSIM) take you to services governed by their own policies.',
+      'Data removal. To delete your application or any information about you, message the staff in Discord, we will remove it without unnecessary questions.',
+      'We do not knowingly process data from children under 13; applicants under 18 are additionally reviewed by staff.',
+    ],
+    terms: [
+      'By using the SkyNational Community website you accept these terms.',
+      'Purpose. The website informs about a community of VATSIM virtual pilots: news, events, a knowledge base and staff applications. Content is provided “as is”.',
+      'Accounts and networks. We do not operate the VATSIM network. All flights and radio communications follow the rules of the chosen network and the community rules (see “Wiki · Rules”).',
+      'Website content. Texts and images belong to SkyNational Community or to member authors. Republishing without attribution is not allowed.',
+      'Conduct. Spam, fake applications and attempts to abuse our forms will be stopped; we reserve the right to block violators.',
+      'Disclaimers and limitation of liability apply to the maximum extent permitted by applicable law.',
+    ],
+    footerNote: 'This is a brief summary, not a full legal document. Ask questions via Discord or the form on the Contact page.',
+  },
+  cookie: {
+    title: 'We use cookies',
+    text: 'Only for technical settings (theme, language). Analytics are enabled after your consent.',
+    accept: 'Accept',
+    reject: 'Essential only',
+    more: 'Learn more',
+  },
+  notfound: {
+    code: '404',
+    title: 'Page not found',
+    text: 'This page does not exist. The link may be outdated.',
+    backHome: 'Back to home',
   },
 };

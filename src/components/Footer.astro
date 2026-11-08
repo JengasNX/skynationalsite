@@ -60,7 +60,7 @@ const community = [
       </div>
 
       <div>
-        <h4>{dict.footer.navTitle}</h4>
+        <h3>{dict.footer.navTitle}</h3>
         <ul>
           {
             sections.map((item) => (
@@ -73,7 +73,7 @@ const community = [
       </div>
 
       <div>
-        <h4>{dict.footer.communityTitle}</h4>
+        <h3>{dict.footer.communityTitle}</h3>
         <ul>
           {
             community.map((item) => (
@@ -86,7 +86,7 @@ const community = [
       </div>
 
       <div>
-        <h4>{dict.footer.followTitle}</h4>
+        <h3>{dict.footer.followTitle}</h3>
         <ul>
           <li>
             <a href={pathFor(lang, '/join')}>{dict.discord.cta}</a>
@@ -100,6 +100,11 @@ const community = [
 
     <div class="site-footer__bottom">
       <span>© {year} {SITE.name}. {dict.footer.rights}</span>
+      <span class="site-footer__legal">
+        <a href={pathFor(lang, '/privacy-policy')}>{dict.legal.privacyTitle}</a>
+        <span aria-hidden="true">·</span>
+        <a href={pathFor(lang, '/terms-of-use')}>{dict.legal.termsTitle}</a>
+      </span>
       <span>{dict.footer.disclaimer}</span>
     </div>
   </div>

@@ -1,0 +1,11 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import LegalView from '../../views/Legal.astro';
+import { dicts } from '../../i18n';
+
+const lang = 'en' as const;
+const dict = dicts[lang];
+---
+<BaseLayout lang={lang} title={dict.legal.termsTitle} pagePath="/terms-of-use" description={dict.legal.terms[0]}>
+  <LegalView lang={lang} kind="terms" />
+</BaseLayout>

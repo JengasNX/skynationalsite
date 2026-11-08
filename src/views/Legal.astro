@@ -1,0 +1,27 @@
+---
+import { dicts, type Lang } from '../i18n';
+import PageHead from '../components/PageHead.astro';
+
+interface Props {
+  lang: Lang;
+  kind: 'privacy' | 'terms';
+}
+
+const { lang, kind } = Astro.props;
+const dict = dicts[lang];
+
+const title = kind === 'privacy' ? dict.legal.privacyTitle : dict.legal.termsTitle;
+const paragraphs = kind === 'privacy' ? dict.legal.privacy : dict.legal.terms;
+---
+
+<PageHead eyebrow={dict.nav.home} title={title} sub={dict.legal.updated} />
+
+<section class="section">
+  <div class="container">
+    <div class="prose legal-prose">
+      {paragraphs.map((p) => <p>{p}</p>)}
+      <hr />
+      <p><em>{dict.legal.footerNote}</em></p>
+    </div>
+  </div>
+</section>

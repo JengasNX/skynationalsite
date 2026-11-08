@@ -66,7 +66,7 @@ const cfg = {
         {
           openVacancies.map((v) => (
             <option value={v.code.toLowerCase()}>
-              {v.code} — {v.title[lang]}
+              {v.code} · {v.title[lang]}
             </option>
           ))
         }
@@ -209,6 +209,9 @@ const cfg = {
     const copyBtn = form.querySelector('[data-copy]');
     const copyLabel = form.querySelector('[data-copy-label]');
     const discordBtn = form.querySelector('[data-open-discord]');
+
+    // Time-trap: submission sooner than 4 s after page load = bot.
+    const openedAt = Date.now();
 
     const select = form.querySelector('#f-vacancy');
     const wanted = new URLSearchParams(location.search).get('vacancy');
@@ -364,6 +367,12 @@ const cfg = {
       const honeypot = form.querySelector('#f-company');
       if (honeypot && honeypot.value) {
         showStatus('ok', cfg.messages.success.title, cfg.messages.success.text);
+        form.reset();
+        return;
+      }
+
+      // Filled too fast for a human: pretend success, do not send.
+      if (Date.now() - openedAt < 4000) {
         form.reset();
         return;
       }

@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { dicts } from '../i18n';
+
+const dict = dicts['ru'];
+const en = dicts['en'];
+---
+
+<BaseLayout lang="ru" title={dict.notfound.title} pagePath="/">
+  <section class="section section--alt nf-band">
+    <div class="container nf">
+      <span class="nf__code">{dict.notfound.code}</span>
+      <h1>{dict.notfound.title}</h1>
+      <p>{dict.notfound.text}</p>
+      <p class="nf__en" lang="en">{en.notfound.title} · {en.notfound.text}</p>
+      <div class="nf__actions">
+        <a class="btn btn--primary btn--lg" href="/skynationalsite/">{dict.notfound.backHome}</a>
+        <a class="btn btn--outline-light btn--lg" href="/skynationalsite/contacts/">{dict.nav.contacts}</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

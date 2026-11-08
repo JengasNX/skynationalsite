@@ -18,7 +18,15 @@ const href = pathFor(lang, `/news/${slugOf(entry.id)}`);
 <article class="card" data-reveal data-news-card data-tags={tags.join(' ')}>
   {
     cover && (
-      <img class="card__cover" src={asset(cover)} alt="" loading="lazy" decoding="async" width="800" height="450" />
+      <img
+        class="card__cover"
+        src={asset(cover)}
+        alt={title}
+        loading="lazy"
+        decoding="async"
+        width="800"
+        height="450"
+      />
     )
   }
   <div class="card__body">
