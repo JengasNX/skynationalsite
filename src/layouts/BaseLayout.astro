@@ -45,6 +45,7 @@ const ogImage = `${SITE.url}${image.startsWith('/') ? image : `/${image}`}`;
     <link rel="icon" type="image/png" href={asset('/assets/favicon.png')} />
     <link rel="apple-touch-icon" href={asset('/assets/apple-touch-icon.png')} />
     <link rel="manifest" href={asset('/site.webmanifest')} />
+    <link rel="sitemap" type="application/xml" href={asset('/sitemap-index.xml')} title="Sitemap" />
     <meta name="theme-color" content="#0a1530" />
     <link rel="preload" as="font" type="font/woff2" href={asset(`/assets/fonts/Onest-${lang === 'ru' ? 'cyrillic' : 'latin'}.woff2`)} crossorigin="anonymous" />
     <meta name="generator" content={Astro.generator} />
