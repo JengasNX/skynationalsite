@@ -17,6 +17,7 @@ const invite = DISCORD.invite.trim();
 const cfg = {
   webhook: DISCORD.webhookUrl.trim(),
   mentionRole: DISCORD.mentionRoleId.trim(),
+  mentionUsers: DISCORD.mentionUserIds,
   invite,
   fallbackUrl: pathFor(lang, '/contacts'),
   labels: {
@@ -327,7 +328,12 @@ const cfg = {
           },
         ],
       };
-      if (cfg.mentionRole) payload.content = '<@&' + cfg.mentionRole + '>';
+      const mentions = [];
+      if (cfg.mentionRole) mentions.push('<@&' + cfg.mentionRole + '>');
+      for (const uid of cfg.mentionUsers) {
+        if (uid.trim()) mentions.push('<@' + uid.trim() + '>');
+      }
+      if (mentions.length) payload.content = mentions.join(' ');
       return payload;
     }
 

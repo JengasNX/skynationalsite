@@ -40,6 +40,8 @@ export const DISCORD = {
   webhookUrl: 'https://discord.com/api/webhooks/1569271737106042892/IY5j5Zstqv5eMmX-qe8gyfMddril0FOQeNYC1bWSzFJGbNe2Dx-4IWmMdj8i8WNc1DhL',
   /** TODO: ID роли, которую нужно упомянуть в заявке (необязательно) */
   mentionRoleId: '',
+  /** Пользователи, которых пингуем при каждой новой заявке */
+  mentionUserIds: ['1101502940314878092', '1226424162307014688'],
 } as const;
 
 export type Social = {
