@@ -36,8 +36,8 @@ export const DISCORD = {
   guildId: '',
   /** Ссылка-инвайт на сервер Discord */
   invite: 'https://discord.gg/9dddBQ35JC',
-  /** TODO: URL вебхука, куда уходят заявки из формы «Присоединиться» */
-  webhookUrl: '',
+  /** URL вебхука, куда уходят заявки из формы «Присоединиться» */
+  webhookUrl: 'https://discord.com/api/webhooks/1569271737106042892/IY5j5Zstqv5eMmX-qe8gyfMddril0FOQeNYC1bWSzFJGbNe2Dx-4IWmMdj8i8WNc1DhL',
   /** TODO: ID роли, которую нужно упомянуть в заявке (необязательно) */
   mentionRoleId: '',
 } as const;
